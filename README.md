@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eframe Main Website
 
-## Getting Started
+This repository contains the core frontend for the Eframe website built with Next.js App Router, Tailwind CSS, and shadcn UI.
 
-First, run the development server:
+## Project overview
+
+- **Primary brand color**: `#ee851a`
+- **Section/navbar background**: `#f1f012`
+- **UI library**: `shadcn/ui`
+- **CSS**: Tailwind CSS 4 with custom theme variables in `app/globals.css`
+- **Fonts**: Geist and Inter loaded via `next/font`
+- **Public assets**: store static media in `public/` and reference them with paths like `/image.png` or `/sucess-story/...`
+
+## Run locally
+
+Install dependencies and start the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key files
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/page.tsx` — home page content and layout
+- `app/layout.tsx` — root HTML layout and font setup
+- `app/globals.css` — global theme variables, background, and color system
+- `components/ui/button.tsx` — shared button component using Tailwind and shadcn
+- `public/` — static media assets for the website
 
-## Learn More
+## Editing the site
 
-To learn more about Next.js, take a look at the following resources:
+- Update the main landing content in `app/page.tsx`
+- Change global colors and theme variables in `app/globals.css`
+- Add or replace images under `public/` and reference them by public path
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- This site uses the `public/` directory for static assets and expects asset URLs to start with `/`.
+- The design currently uses custom brand styling through CSS variables rather than hard-coded colors.
