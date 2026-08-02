@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { InternalPage } from "@/components/internal-page";
-import { getGeneralPage } from "@/lib/cms";
 const pages: Record<
   string,
   { title: string; eyebrow: string; description: string; image?: string }
@@ -74,28 +73,11 @@ export function generateStaticParams() {
 }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = pages[(await params).section];
-  const cms = await getGeneralPage((await params).section);
-  return cms
-    ? {
-        title: cms.seo?.metaTitle ?? cms.title,
-        description: cms.seo?.metaDescription ?? cms.summary,
-        robots: cms.seo?.noIndex ? { index: false } : undefined,
-      }
-    : page
-      ? { title: page.eyebrow, description: page.description }
-      : {};
+  return page ? { title: page.eyebrow, description: page.description } : {};
 }
 export default async function SectionPage({ params }: Props) {
   const key = (await params).section;
-  const cms = await getGeneralPage(key);
-  const page = cms
-    ? {
-        title: cms.title,
-        eyebrow: cms.eyebrow,
-        description: cms.summary,
-        image: cms.image,
-      }
-    : pages[key];
+  const page = pages[key];
   if (!page) notFound();
   return <InternalPage {...page} breadcrumbs={[{ label: page.eyebrow }]} />;
 }

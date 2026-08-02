@@ -1,12 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { InternalPage } from "@/components/internal-page";
-import { getServiceGroups, getServices } from "@/lib/cms";
-export default async function Page() {
-  const [groups, services] = await Promise.all([
-    getServiceGroups(),
-    getServices(),
-  ]);
+import { serviceGroups } from "@/lib/content";
+export const metadata: Metadata = {
+  title: "Services",
+  description:
+    "Explore Eframe learning, immersive, creative and enterprise services.",
+};
+export default function ServicesPage() {
   return (
     <InternalPage
       title="Services built for meaningful change."
@@ -16,15 +18,7 @@ export default async function Page() {
     >
       <section className="section-shell py-24">
         <div className="grid gap-5 md:grid-cols-2">
-          {(groups.length
-            ? groups
-            : services.map((x) => ({
-                title: x.title,
-                slug: x.slug,
-                description: x.summary,
-                children: [],
-              }))
-          ).map((group, i) => (
+          {serviceGroups.map((group, i) => (
             <Link
               href={`/services/${group.slug}`}
               className="group rounded-2xl bg-muted p-8 sm:p-10"

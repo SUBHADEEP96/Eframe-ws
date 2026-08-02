@@ -128,24 +128,12 @@ const homepage = defineType({
     }),
     defineField({ name: "seo", type: "seo" }),
     defineField({
-      name: "sectionContent",
-      title: "Editable section copy",
-      type: "array",
-      of: [
-        {
-          type: "object",
-          fields: [
-            { name: "key", type: "string", validation: (r) => r.required() },
-            { name: "eyebrow", type: "string" },
-            { name: "heading", type: "string" },
-            { name: "description", type: "text" },
-            { name: "cta", type: "link" },
-          ],
-        },
-      ],
+      name: "status",
+      type: "string",
+      options: { list: ["draft", "published"] },
+      initialValue: "draft",
     }),
   ],
-  preview: { prepare: () => ({ title: "Homepage" }) },
 });
 const contentDoc = (name: string, title: string) =>
   defineType({
@@ -174,199 +162,33 @@ const contentDoc = (name: string, title: string) =>
         name: "image",
         type: "image",
         options: { hotspot: true },
-        validation: name === "clientLogo" ? (r) => r.required() : undefined,
-        fields: [
-          { name: "alt", type: "string", validation: (r) => r.required() },
-        ],
+        fields: [{ name: "alt", type: "string" }],
       }),
       defineField({
         name: "body",
         type: "array",
         of: [{ type: "block" }, { type: "image" }],
       }),
+      defineField({ name: "order", type: "number" }),
+      defineField({ name: "features", type: "array", of: [{type:"string"}] }),
+      defineField({ name: "benefits", type: "array", of: [{type:"string"}] }),
+      defineField({ name: "gallery", type: "array", of: [{type:"image", options:{hotspot:true}, fields:[{name:"alt",type:"string",validation:(r)=>r.required()}]}] }),
+      defineField({ name: "relatedServices", type: "array", of: [{type:"reference",to:[{type:"service"}]}] }),
+      defineField({ name: "relatedSolutions", type: "array", of: [{type:"reference",to:[{type:"solution"}]}] }),
+      defineField({ name: "relatedIndustries", type: "array", of: [{type:"reference",to:[{type:"industry"}]}] }),
+      defineField({ name: "relatedClients", type: "array", of: [{type:"reference",to:[{type:"clientLogo"}]}] }),
+      defineField({ name: "relatedStories", type: "array", of: [{type:"reference",to:[{type:"successStory"},{type:"caseStudy"}]}] }),
+      defineField({ name: "youtubeUrls", type: "array", of: [{type:"url"}] }),
+      defineField({ name: "faqs", type: "array", of: [{type:"reference",to:[{type:"faq"}]}] }),
+      defineField({ name: "socialLinks", type: "array", of: [{type:"object",fields:[{name:"label",type:"string"},{name:"url",type:"url"}]}] }),
       defineField({
-        name: "order",
-        type: "number",
-        initialValue: 100,
-        validation: (r) => r.integer().min(0),
+        name: "status",
+        type: "string",
+        options: { list: ["draft", "published"] },
+        initialValue: "draft",
       }),
-      defineField({
-        name: "features",
-        type: "array",
-        of: [{ type: "string" }],
-      }),
-      defineField({
-        name: "benefits",
-        type: "array",
-        of: [{ type: "string" }],
-      }),
-      ...(name === "service"
-        ? [
-            defineField({
-              name: "parent",
-              type: "reference",
-              to: [{ type: "serviceCategory" }],
-            }),
-          ]
-        : []),
-      defineField({
-        name: "gallery",
-        type: "array",
-        of: [
-          {
-            type: "image",
-            options: { hotspot: true },
-            fields: [
-              { name: "alt", type: "string", validation: (r) => r.required() },
-            ],
-          },
-        ],
-      }),
-      defineField({
-        name: "relatedServices",
-        type: "array",
-        of: [{ type: "reference", to: [{ type: "service" }] }],
-      }),
-      defineField({
-        name: "relatedSolutions",
-        type: "array",
-        of: [{ type: "reference", to: [{ type: "solution" }] }],
-      }),
-      defineField({
-        name: "relatedIndustries",
-        type: "array",
-        of: [{ type: "reference", to: [{ type: "industry" }] }],
-      }),
-      defineField({
-        name: "relatedClients",
-        type: "array",
-        of: [{ type: "reference", to: [{ type: "clientLogo" }] }],
-      }),
-      defineField({
-        name: "relatedStories",
-        type: "array",
-        of: [
-          {
-            type: "reference",
-            to: [{ type: "successStory" }, { type: "caseStudy" }],
-          },
-        ],
-      }),
-      defineField({
-        name: "youtubeUrls",
-        type: "array",
-        of: [{ type: "url" }],
-      }),
-      defineField({
-        name: "faqs",
-        type: "array",
-        of: [{ type: "reference", to: [{ type: "faq" }] }],
-      }),
-      defineField({
-        name: "socialLinks",
-        type: "array",
-        of: [
-          {
-            type: "object",
-            fields: [
-              {
-                name: "label",
-                type: "string",
-                validation: (r) => r.required(),
-              },
-              { name: "url", type: "url", validation: (r) => r.required() },
-            ],
-          },
-        ],
-      }),
-      ...(name === "faq"
-        ? [
-            defineField({
-              name: "answer",
-              type: "text",
-              rows: 5,
-              validation: (r) => r.required(),
-            }),
-          ]
-        : []),
-      ...(name === "testimonial"
-        ? [
-            defineField({
-              name: "quote",
-              type: "text",
-              validation: (r) => r.required(),
-            }),
-            defineField({ name: "personName", type: "string" }),
-            defineField({ name: "personRole", type: "string" }),
-          ]
-        : []),
-      ...(name === "event"
-        ? [defineField({ name: "eventDate", type: "datetime" })]
-        : []),
-      ...(name === "videoEmbed"
-        ? [
-            defineField({
-              name: "embedUrl",
-              type: "url",
-              validation: (r) => r.required(),
-            }),
-          ]
-        : []),
-      ...(name === "cta"
-        ? [
-            defineField({ name: "primaryCta", type: "link" }),
-            defineField({ name: "secondaryCta", type: "link" }),
-          ]
-        : []),
-      ...(name === "contactSettings"
-        ? [
-            defineField({ name: "address", type: "text" }),
-            defineField({ name: "email", type: "email" }),
-            defineField({
-              name: "phones",
-              type: "array",
-              of: [{ type: "string" }],
-            }),
-            defineField({ name: "mapUrl", type: "url" }),
-          ]
-        : []),
-      ...(name === "footer"
-        ? [
-            defineField({
-              name: "columns",
-              type: "array",
-              of: [
-                {
-                  type: "object",
-                  fields: [
-                    { name: "title", type: "string" },
-                    { name: "links", type: "array", of: [{ type: "link" }] },
-                  ],
-                },
-              ],
-            }),
-            defineField({
-              name: "legalLinks",
-              type: "array",
-              of: [{ type: "link" }],
-            }),
-          ]
-        : []),
       defineField({ name: "seo", type: "seo" }),
     ],
-    orderings: [
-      {
-        title: "Display order",
-        name: "displayOrder",
-        by: [
-          { field: "order", direction: "asc" },
-          { field: "title", direction: "asc" },
-        ],
-      },
-    ],
-    preview: {
-      select: { title: "title", subtitle: "summary", media: "image" },
-    },
   });
 const navigation = defineType({
   name: "navigation",
@@ -389,6 +211,11 @@ const navigation = defineType({
       ],
     }),
     defineField({ name: "contactCta", type: "link" }),
+    defineField({
+      name: "status",
+      type: "string",
+      options: { list: ["draft", "published"] },
+    }),
   ],
 });
 export const schemaTypes = [
@@ -401,7 +228,6 @@ export const schemaTypes = [
     ["solution", "Solutions"],
     ["product", "Products"],
     ["service", "Services"],
-    ["serviceCategory", "Service categories"],
     ["industry", "Industries"],
     ["clientLogo", "Client logos"],
     ["testimonial", "Testimonials"],

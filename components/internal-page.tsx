@@ -4,9 +4,8 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import { FAQ } from "./faq";
-import { getGlobalContent } from "@/lib/cms";
 
-export async function InternalPage({
+export function InternalPage({
   title,
   eyebrow,
   description,
@@ -21,10 +20,9 @@ export async function InternalPage({
   breadcrumbs: { label: string; href?: string }[];
   children?: React.ReactNode;
 }) {
-  const content = await getGlobalContent();
   return (
     <>
-      <SiteHeader content={content} />
+      <SiteHeader />
       <main className="pt-[76px]">
         <section className="relative min-h-[500px] overflow-hidden bg-ink">
           <Image
@@ -63,7 +61,7 @@ export async function InternalPage({
         </section>
         {children ?? <ServiceBody title={title} />}
       </main>
-      <SiteFooter content={content} />
+      <SiteFooter />
     </>
   );
 }

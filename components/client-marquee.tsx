@@ -1,11 +1,11 @@
 import Image from "next/image";
-import type { CmsClient } from "@/lib/cms";
+import { clients } from "@/lib/catalog";
 
 function Row({
   items,
   reverse = false,
 }: {
-  items: CmsClient[];
+  items: typeof clients;
   reverse?: boolean;
 }) {
   const doubled = [...items, ...items];
@@ -34,7 +34,7 @@ function Row({
   );
 }
 
-export function ClientMarquee({ clients }: { clients: CmsClient[] }) {
+export function ClientMarquee() {
   const midpoint = Math.ceil(clients.length / 2);
 
   return (
@@ -44,3 +44,4 @@ export function ClientMarquee({ clients }: { clients: CmsClient[] }) {
     </div>
   );
 }
+

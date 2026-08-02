@@ -1,37 +1,33 @@
-# Sanity content-to-UI implementation matrix
+# Eframe remediation implementation map
 
-Public GROQ runs with the client's `published` perspective and `active != false`; Sanity's draft/publish lifecycle is the publication boundary. `order` defaults last and ties sort by title. The runtime fallback is used only when configuration/retrieval fails or while `SANITY_MIGRATION_COMPLETE` is not `true`; after migration, an intentionally empty CMS result remains empty.
+| Requirement | Implementation evidence |
+|---|---|
+| 1 Clients | `components/client-marquee.tsx`, `lib/catalog.ts`, client schema fields and deterministic seed |
+| 2 Services | `app/services/[...slug]/page.tsx`, `components/internal-page.tsx`, approved service hero assets |
+| 3 Success stories | `app/success-stories/`, `components/catalog-pages.tsx`, verified project media in `lib/catalog.ts` |
+| 4 Solutions | `app/solutions/`, solution catalogue and Sanity solution documents |
+| 5 Icons | `app/favicon.ico`, `app/icon.svg`, `app/manifest.ts`, root metadata |
+| 6 Social | `components/site-footer.tsx` and seeded `siteSettings.socialLinks` |
+| 7 Video | `videoEmbed` schema and optional `youtubeUrls`; no unverified video ID is published |
+| 8 Contact | `app/contact`, `app/api/contact`, shared Zod schema, Resend server transport and environment example |
+| 9 Footer | `components/site-footer.tsx`; exact `#f0bf4c`, scalable SVG wave, navigation/contact/social/legal content |
+| 10 Header | `components/site-header.tsx` and balanced `.logo-wrap` sizing in global CSS |
+| 11 CMS | expanded related-document fields and deterministic guarded seed in `scripts/seed-sanity.mjs` |
+| 12 Routing/SEO | dynamic detail routes, metadata, sitemap/robots, 404, loading, route/root errors |
 
-| Studio type / key fields                                                       | Query / adapter                                          | Public consumer                                       | Migration source and assets                               | Verification                   |
-| ------------------------------------------------------------------------------ | -------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------- | ------------------------------ |
-| `homepage`: title, heroSlides, sectionContent, seo                             | `HOMEPAGE_QUERY` / `getHomepage`                         | homepage hero, editable metadata/copy model           | `lib/content.ts`; desktop/mobile banners and PDFs         | pipeline test; build homepage  |
-| `solution`: common content, featured, order, relations, SEO                    | solutions + featured queries / card adapter              | homepage Top Solutions; `/solutions` and slug detail  | `lib/catalog.ts`, homepage solutions and matching banners | listing/detail query tests     |
-| `product`: common content and relations                                        | `PRODUCTS_QUERY`                                         | `/products` and `/products/[slug]`                    | verified Elevox/Drive 360 entries and media               | listing/detail test/build      |
-| `serviceCategory`, `service`: parent, content, gallery, related docs, FAQ, SEO | category/services/slug queries                           | service listing/detail, header mega-menu, footer      | `serviceGroups` and approved service banners              | route/static-param tests       |
-| `industry`: common content and relations                                       | industry listing/slug queries                            | homepage-ready catalogue, listing/detail              | `lib/catalog.ts` and industry project media               | route tests                    |
-| `clientLogo`: image+required alt, accessibleLabel, order                       | `CLIENT_LOGOS_QUERY` maps title→name, asset URL→logo     | two-row `ClientMarquee` prop                          | 22 verified logo files; seed uploads each asset           | prop/accessibility test        |
-| `testimonial`: quote, personName/role, common visibility                       | `TESTIMONIALS_QUERY`                                     | optional homepage partner section                     | existing dataset only; no identities invented             | empty/populated rendering test |
-| `successStory`: client/category, gallery, relations, SEO                       | complete/featured/slug queries                           | homepage selected work; listing/detail                | six verified catalog stories and project media            | route/build tests              |
-| `caseStudy`: client/category, body/gallery/relations                           | case-study listing/slug queries                          | listing/detail and sitemap                            | verified story-derived case-study source                  | route tests                    |
-| `event`: eventDate, image/gallery                                              | `EVENTS_QUERY`                                           | optional homepage Pictures & events                   | existing approved dataset/media only                      | empty section omission test    |
-| `faq`: question title, required answer, order                                  | `FAQS_QUERY`                                             | homepage FAQ and JSON-LD; referenced detail FAQ       | existing homepage FAQs                                    | query/pipeline test            |
-| `cta`: primary/secondary link                                                  | `CTAS_QUERY`                                             | query-ready homepage/global CTA model                 | existing verified CTA labels/paths                        | query coverage test            |
-| `videoEmbed`: embedUrl, image                                                  | `VIDEO_EMBEDS_QUERY`                                     | query-ready optional media sections                   | no video identity invented                                | query coverage test            |
-| `navigation`: nested links, contact CTA                                        | singleton query / `getGlobalContent`                     | desktop/mobile header and mega-menu                   | current header and service groups                         | singleton + public layout test |
-| `footer`: columns/legalLinks/summary                                           | singleton query / global adapter                         | global footer                                         | current footer/legal content                              | global adapter/build           |
-| `siteSettings`: logos, summary, socialLinks                                    | singleton query / global adapter                         | footer brand/social links                             | verified public logos and current social URLs             | singleton/build                |
-| `contactSettings`: address/email/phones/map                                    | singleton query / global adapter                         | contact page and global footer                        | current contact page                                      | contact/footer build           |
-| `generalPage`: body/image/relations/SEO                                        | general page slug query                                  | `/about`, `/insights`, legal and future section slugs | approved route copy and assets                            | slug/404 logic test            |
-| SEO and sitemap                                                                | projections on every card + `ALL_PUBLIC_DOCUMENTS_QUERY` | metadata, canonical/OG inputs, dynamic sitemap        | existing route metadata                                   | sitemap/build test             |
+## Legacy route and approved asset mapping
 
-## Relationships and field normalization
+| Legacy source | New route | Representative repository media |
+|---|---|---|
+| `film-production.html` | `/services/creative-studio/films` | `banner-film-production.png`, `sucess-story/film/*` |
+| `creative-designs-branding.html` | `/services/creative-studio/branding-campaigns` | `Creative-Designs-Branding_banner.png`, `sucess-story/Creative_Branding_and_Campaign/*` |
+| `virtual-reality.html` | `/services/immersive-experiences/vr-ar` | `Virtual-Reality-banner.png`, `sucess-story/VRandAR/*` |
+| `process-digitization.html` | `/services/enterprise-solutions/process-digitization` | `Process-Digitization-banner.png`, `sucess-story/Process_Digitization/*` |
+| `e-learning-solution.html` | `/services/learning-solutions/e-learning` | `E-Learning-Solution-banner.png`, `sucess-story/Elearning/*` |
+| `learning-management-system.html` | `/services/learning-solutions/lms` | `Learning-Management-System-banner.png`, `sucess-story/Learning_Management_System/*` |
+| `2D-and-3D-animation-and-explainer-videos.html` | `/services/creative-studio/2d-3d-animation` | `2d-3d-Animation-banner.png`, `sucess-story/2D_and_3D/*` |
+| `gaming_and_simulation.html` | `/services/learning-solutions/simulation-games` | `game-and-simulation.png`, `sucess-story/Simulation_and_Game/*` |
 
-All content documents expose related services, solutions, industries, clients, stories/case studies and FAQs. GROQ resolves display references in the view model rather than leaking Sanity reference/image objects into components. Images project URL, alt, dimensions, aspect ratio, LQIP, crop and hotspot. The marquee mismatch is normalized centrally (`title` → `name`, `image.asset->url` → `logo`, accessible label fallback → `displayLabel`).
+## Asset audit
 
-## Freshness and singleton policy
-
-`sanity/lib/live.ts` uses `defineLive`; only the `(site)` route-group layout renders `SanityLive`, so `/studio` never includes it. Navigation, footer, homepage, site settings and contact settings use deterministic document IDs and Studio removes their generic “new document” templates. Publishing, updating, ordering, deactivating and unpublishing therefore invalidate public live queries without deployment.
-
-## Migration report contract
-
-`scripts/seed-sanity.mjs` performs guarded deterministic inserts, uploads each display asset, never deletes or overwrites editor documents, and emits JSON counts for `created`, `skipped`, `assets`, and `unresolved`. Set `SANITY_MIGRATION_COMPLETE=true` only after the report has zero unresolved assets and content/route review passes.
+The `public/` tree contains 190 approved files: service desktop/mobile banners, 23 verified client logos, profile/simulator PDFs and success-story media organised by Film, Creative Branding, VR/AR, Process Digitisation, E-learning, LMS, Animation and Simulation. Duplicate raster pairs (notably simulation `.jpg`/`.png` variants and `surya-nepal` copies) are retained but only one matching source is selected in page data. Runtime references always use public-root URLs and `next/image` with fixed aspect ratios.
