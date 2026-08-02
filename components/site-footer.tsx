@@ -1,17 +1,46 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Link as SocialIcon } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { SiFacebook, SiYoutube, SiInstagram } from "react-icons/si";
+import { ImLinkedin2 } from "react-icons/im";
+
 import { serviceGroups } from "@/lib/content";
 export function SiteFooter() {
   const socials = [
-    ["LinkedIn", "https://www.linkedin.com/company/28124515/", SocialIcon],
-    ["Facebook", "https://www.facebook.com/eframe.infomedia", SocialIcon],
-    ["YouTube", "https://youtube.com/channel/UC-CUXTkd1dwbyPSCN-yadnw", SocialIcon],
-    ["Instagram", "https://www.instagram.com/eframehub/", SocialIcon],
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/company/28124515/",
+      Icon: ImLinkedin2,
+    },
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/eframe.infomedia",
+      Icon: SiFacebook,
+    },
+    {
+      label: "YouTube",
+      href: "https://youtube.com/channel/UC-CUXTkd1dwbyPSCN-yadnw",
+      Icon: SiYoutube,
+    },
+    {
+      label: "Instagram",
+      href: "https://www.instagram.com/eframehub/",
+      Icon: SiInstagram,
+    },
   ] as const;
   return (
     <footer className="site-footer">
-      <svg className="footer-wave" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true"><path d="M0 52C230 2 430 0 720 38c290 38 500 32 720-20v54H0Z" fill="#f0bf4c"/></svg>
+      <svg
+        className="footer-wave"
+        viewBox="0 0 1440 72"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M0 52C230 2 430 0 720 38c290 38 500 32 720-20v54H0Z"
+          fill="#f0bf4c"
+        />
+      </svg>
       <div className="section-shell py-16 sm:py-20">
         <div className="grid gap-12 border-b border-white/10 pb-14 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
@@ -26,7 +55,36 @@ export function SiteFooter() {
               Learning, immersive, creative and enterprise digital solutions
               shaped around real business needs.
             </p>
-            <div className="mt-6 flex gap-3">{socials.map(([label,href,Icon])=><a href={href} target="_blank" rel="noopener noreferrer" className="social-link" aria-label={`Eframe on ${label}`} key={label}><Icon aria-hidden="true"/></a>)}</div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              {socials.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Follow Eframe on ${label}`}
+                  className="
+        inline-flex size-11 items-center justify-center
+        rounded-full border border-black/20
+        text-black transition duration-200
+        hover:-translate-y-1 hover:bg-black hover:text-[#f0bf4c]
+        focus-visible:outline-none
+        focus-visible:ring-2 focus-visible:ring-black
+        focus-visible:ring-offset-2
+        focus-visible:ring-offset-[#f0bf4c]
+      "
+                >
+                  <Icon
+                    className="size-5"
+                    aria-hidden="true"
+                    focusable="false"
+                  />
+                </a>
+              ))}
+            </div>
+
+            {/*  */}
           </div>
           <div>
             <h3>Services</h3>
@@ -38,7 +96,17 @@ export function SiteFooter() {
               ))}
             </div>
           </div>
-          <div className="lg:col-span-2"><h3>Contact</h3><div><span>E405, DC Block, City Centre, Sector - 1, Salt Lake, Kolkata - 700 064</span><a href="mailto:info@eframe.in">info@eframe.in</a><a href="tel:+919674032010">+91 9674032010</a></div></div>
+          <div className="lg:col-span-2">
+            <h3>Contact</h3>
+            <div>
+              <span>
+                E405, DC Block, City Centre, Sector - 1, Salt Lake, Kolkata -
+                700 064
+              </span>
+              <a href="mailto:info@eframe.in">info@eframe.in</a>
+              <a href="tel:+919674032010">+91 9674032010</a>
+            </div>
+          </div>
           <div>
             <h3>Explore</h3>
             <div>
