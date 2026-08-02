@@ -11,4 +11,3 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # Agent access note
 
 Static media files can be accessed from the `public/` directory. Use public URLs like `/image.png` or `/sucess-story/...` when referencing assets in the app.
-
