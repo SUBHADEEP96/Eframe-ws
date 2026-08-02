@@ -13,8 +13,8 @@ import { HomepageHero } from "@/components/homepage-hero";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FAQ } from "@/components/faq";
-import { homepage } from "@/lib/content";
 import { ClientMarquee } from "@/components/client-marquee";
+import { getGlobalContent, getHomepage } from "@/lib/cms";
 
 export const metadata: Metadata = {
   title: "Enterprise Learning, Immersive & Digital Solutions",
@@ -24,7 +24,11 @@ export const metadata: Metadata = {
 
 const icons = [Layers3, Sparkles, BrainCircuit, ShieldCheck, Clapperboard];
 
-export default function Home() {
+export default async function Home() {
+  const [homepage, globalContent] = await Promise.all([
+    getHomepage(),
+    getGlobalContent(),
+  ]);
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -37,7 +41,7 @@ export default function Home() {
 
   return (
     <>
-      <SiteHeader overlay />
+      <SiteHeader overlay content={globalContent} />
       <main>
         <HomepageHero slides={homepage.heroSlides} />
 
@@ -58,7 +62,7 @@ export default function Home() {
               return (
                 <Link
                   className="solution-card group"
-                  href={solution.href}
+                  href={`/solutions/${solution.slug}`}
                   key={solution.title}
                 >
                   <Image
@@ -80,7 +84,7 @@ export default function Home() {
                         <ArrowRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1" />
                       </span>
                       <span className="mt-3 block max-w-sm text-sm leading-6 text-white/70">
-                        {solution.description}
+                        {solution.summary}
                       </span>
                     </span>
                   </span>
@@ -194,7 +198,9 @@ export default function Home() {
                 Clients at a glance
               </h2>
             </div>
-            <div className="mt-12"><ClientMarquee /></div>
+            <div className="mt-12">
+              <ClientMarquee clients={homepage.clients} />
+            </div>
           </div>
         </section>
 
@@ -211,13 +217,13 @@ export default function Home() {
           <div className="grid gap-6 md:grid-cols-3">
             {homepage.stories.map((story, index) => (
               <Link
-                href={`/success-stories/${["ceat-vr-training","vesuvius-interactive-learning","vesuvius-digital-permit-to-work"][index]}`}
+                href={`/success-stories/${story.slug}`}
                 className={`story-card ${index === 0 ? "md:col-span-2" : ""}`}
                 key={story.title}
               >
                 <Image
                   src={story.image}
-                  alt={story.alt}
+                  alt={`${story.title} project image`}
                   fill
                   sizes={
                     index === 0
@@ -238,6 +244,62 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        {homepage.testimonials.length ? (
+          <section className="bg-soft py-24">
+            <div className="section-shell">
+              <div className="section-kicker">Client perspectives</div>
+              <h2 className="display-title">What our partners say.</h2>
+              <div className="mt-10 grid gap-6 md:grid-cols-2">
+                {homepage.testimonials.map((item) => (
+                  <blockquote
+                    className="rounded-2xl bg-white p-8"
+                    key={item._id}
+                  >
+                    <p className="text-xl leading-8">
+                      {item.quote ?? item.title}
+                    </p>
+                    <footer className="mt-5 text-sm text-muted-foreground">
+                      {item.personName}
+                      {item.personRole ? ` · ${item.personRole}` : ""}
+                    </footer>
+                  </blockquote>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {homepage.events.length ? (
+          <section className="section-shell py-24">
+            <div className="section-kicker">Pictures & events</div>
+            <h2 className="display-title">Life at Eframe.</h2>
+            <div className="mt-10 grid gap-6 md:grid-cols-3">
+              {homepage.events.map((event) => (
+                <article
+                  className="overflow-hidden rounded-2xl border"
+                  key={event._id}
+                >
+                  <div className="relative aspect-video">
+                    <Image
+                      src={event.image}
+                      alt={`${event.title} event`}
+                      fill
+                      sizes="(max-width:768px) 100vw,33vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-xl font-semibold">{event.title}</h3>
+                    <p className="mt-2 text-muted-foreground">
+                      {event.summary}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="bg-primary py-24 sm:py-28">
           <div className="section-shell grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
@@ -297,7 +359,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <SiteFooter />
+      <SiteFooter content={globalContent} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}

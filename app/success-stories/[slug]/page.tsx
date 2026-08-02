@@ -1,2 +1,0 @@
-import { notFound } from "next/navigation"; import { CatalogDetail } from "@/components/catalog-pages"; import { stories } from "@/lib/catalog";
-type Props={params:Promise<{slug:string}>}; export function generateStaticParams(){return stories.map(({slug})=>({slug}))}; export default async function Page({params}:Props){const {slug}=await params;const x=stories.find(i=>i.slug===slug);if(!x)notFound();return <CatalogDetail item={x} section="Success Stories"/>}

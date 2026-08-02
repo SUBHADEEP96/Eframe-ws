@@ -40,7 +40,66 @@ export default defineConfig({
   projectId,
   dataset,
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title("Content")
+          .items([
+            ...[
+              "homepage",
+              "navigation",
+              "footer",
+              "siteSettings",
+              "contactSettings",
+            ].map((type) =>
+              S.listItem()
+                .title(
+                  type === "siteSettings"
+                    ? "Site settings"
+                    : type === "contactSettings"
+                      ? "Contact settings"
+                      : type[0].toUpperCase() + type.slice(1),
+                )
+                .child(
+                  S.document()
+                    .schemaType(type)
+                    .documentId(
+                      type === "homepage"
+                        ? "homepage"
+                        : type.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`),
+                    ),
+                ),
+            ),
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (item) =>
+                ![
+                  "homepage",
+                  "navigation",
+                  "footer",
+                  "siteSettings",
+                  "contactSettings",
+                ].includes(item.getId() ?? ""),
+            ),
+          ]),
+    }),
+    visionTool(),
+  ],
+
+  document: {
+    newDocumentOptions: (items) =>
+      items.filter(
+        (item) =>
+          ![
+            "homepage",
+            "navigation",
+            "footer",
+            "siteSettings",
+            "contactSettings",
+          ].includes(item.templateId),
+      ),
+  },
 
   schema: {
     types: schemaTypes,

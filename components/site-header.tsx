@@ -4,18 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
-import { serviceGroups } from "@/lib/content";
+import type { GlobalContent } from "@/lib/cms";
 
-const simpleLinks = [
-  { label: "Solutions", href: "/solutions" },
-  { label: "Products", href: "/products" },
-  { label: "Industries", href: "/industries" },
-  { label: "Success Stories", href: "/success-stories" },
-  { label: "Insights", href: "/insights" },
-  { label: "About", href: "/about" },
-];
-
-export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
+export function SiteHeader({
+  overlay = false,
+  content,
+}: {
+  overlay?: boolean;
+  content: GlobalContent;
+}) {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -73,15 +70,21 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           >
             Services <ChevronDown />
           </button>
-          {simpleLinks.slice(1).map((link) => (
-            <Link className="nav-link" href={link.href} key={link.label}>
-              {link.label}
-            </Link>
-          ))}
+          {content.navigation.items
+            .filter((link) => link.href !== "/solutions")
+            .map((link) => (
+              <Link className="nav-link" href={link.href} key={link.label}>
+                {link.label}
+              </Link>
+            ))}
         </nav>
         <div className="flex items-center gap-3">
-          <Link className="header-contact hidden sm:flex" href="/contact">
-            Contact us <ArrowRight />
+          <Link
+            className="header-contact hidden sm:flex"
+            href={content.navigation.contactCta?.href ?? "/contact"}
+          >
+            {content.navigation.contactCta?.label ?? "Contact us"}{" "}
+            <ArrowRight />
           </Link>
           <button
             className="menu-button xl:hidden"
@@ -100,7 +103,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           onMouseLeave={() => setServicesOpen(false)}
         >
           <div className="section-shell grid gap-8 py-10 lg:grid-cols-4">
-            {serviceGroups.map((group) => (
+            {content.serviceGroups.map((group) => (
               <div key={group.slug}>
                 <Link
                   href={`/services/${group.slug}`}
@@ -144,7 +147,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 Services <ChevronDown />
               </summary>
               <div className="flex flex-col gap-1 pb-3 pl-4">
-                {serviceGroups.map((group) => (
+                {content.serviceGroups.map((group) => (
                   <Link
                     href={`/services/${group.slug}`}
                     onClick={() => setMobileOpen(false)}
@@ -155,22 +158,25 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
                 ))}
               </div>
             </details>
-            {simpleLinks.slice(1).map((link) => (
-              <Link
-                className="mobile-link"
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                key={link.label}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {content.navigation.items
+              .filter((link) => link.href !== "/solutions")
+              .map((link) => (
+                <Link
+                  className="mobile-link"
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  key={link.label}
+                >
+                  {link.label}
+                </Link>
+              ))}
             <Link
               className="header-contact mt-4 flex justify-center"
-              href="/contact"
+              href={content.navigation.contactCta?.href ?? "/contact"}
               onClick={() => setMobileOpen(false)}
             >
-              Contact us <ArrowRight />
+              {content.navigation.contactCta?.label ?? "Contact us"}{" "}
+              <ArrowRight />
             </Link>
           </div>
         </nav>
