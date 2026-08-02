@@ -33,9 +33,11 @@ export const metadata: Metadata = {
       "Enterprise learning, immersive, creative and digital solutions.",
   },
   robots: { index: true, follow: true },
+  icons: { icon:[{url:"/favicon.ico"},{url:"/icon.svg",type:"image/svg+xml"}], apple:"/icon.svg" },
+  manifest: "/manifest.webmanifest",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: {children: React.ReactNode}) {
   return (
     <html
       lang="en"
