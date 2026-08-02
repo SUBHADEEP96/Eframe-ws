@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { serviceGroups } from "@/lib/content";
+export default function sitemap(): MetadataRoute.Sitemap { const base = "https://eframe.in"; const services = serviceGroups.flatMap((group) => [`/services/${group.slug}`, ...group.children.map(([, slug]) => `/services/${group.slug}/${slug}`)]); return ["", "/services", "/solutions", "/products", "/industries", "/success-stories", "/case-studies", "/insights", "/about", "/contact", ...services].map((path) => ({ url: `${base}${path}`, lastModified: new Date(), changeFrequency: path === "" ? "weekly" : "monthly", priority: path === "" ? 1 : .7 })); }
