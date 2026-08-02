@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { SiFacebook, SiYoutube, SiInstagram } from "react-icons/si";
-import { ImLinkedin2 } from "react-icons/im";
 
-import { serviceGroups } from "@/lib/content";
-export function SiteFooter() {
-  const socials = [
+import type { GlobalContent } from "@/lib/cms";
+export function SiteFooter({ content }: { content: GlobalContent }) {
+  const socials = content.site.socialLinks.map(({ label, url }) => ({
+    label,
+    href: url,
+    Icon: ArrowUpRight,
+  }));
+  /* const legacySocials = [
     {
       label: "LinkedIn",
       href: "https://www.linkedin.com/company/28124515/",
@@ -27,7 +30,7 @@ export function SiteFooter() {
       href: "https://www.instagram.com/eframehub/",
       Icon: SiInstagram,
     },
-  ] as const;
+  ] as const; */
   return (
     <footer className="site-footer">
       <svg
@@ -52,8 +55,7 @@ export function SiteFooter() {
               className="h-auto w-40"
             />
             <p className="mt-6 max-w-sm leading-7 text-black/75">
-              Learning, immersive, creative and enterprise digital solutions
-              shaped around real business needs.
+              {content.footer.summary}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -89,7 +91,7 @@ export function SiteFooter() {
           <div>
             <h3>Services</h3>
             <div>
-              {serviceGroups.map((group) => (
+              {content.serviceGroups.map((group) => (
                 <Link href={`/services/${group.slug}`} key={group.slug}>
                   {group.title}
                 </Link>
@@ -99,12 +101,15 @@ export function SiteFooter() {
           <div className="lg:col-span-2">
             <h3>Contact</h3>
             <div>
-              <span>
-                E405, DC Block, City Centre, Sector - 1, Salt Lake, Kolkata -
-                700 064
-              </span>
-              <a href="mailto:info@eframe.in">info@eframe.in</a>
-              <a href="tel:+919674032010">+91 9674032010</a>
+              <span>{content.contact.address}</span>
+              <a href={`mailto:${content.contact.email}`}>
+                {content.contact.email}
+              </a>
+              {content.contact.phones.map((phone) => (
+                <a href={`tel:${phone.replaceAll(" ", "")}`} key={phone}>
+                  {phone}
+                </a>
+              ))}
             </div>
           </div>
           <div>
@@ -144,8 +149,11 @@ export function SiteFooter() {
             reserved.
           </p>
           <div className="flex gap-5">
-            <Link href="/privacy">Privacy</Link>
-            <Link href="/terms">Terms</Link>
+            {content.footer.legalLinks.map((link) => (
+              <Link href={link.href} key={link.href}>
+                {link.label}
+              </Link>
+            ))}
             <Link href="/contact" className="inline-flex items-center gap-1">
               Contact <ArrowUpRight />
             </Link>

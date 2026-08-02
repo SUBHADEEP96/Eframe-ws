@@ -172,7 +172,6 @@ export type GeneralPage = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -307,7 +306,7 @@ export type VideoEmbed = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  embedUrl?: string;
   seo?: Seo;
 };
 
@@ -406,7 +405,10 @@ export type ContactSettings = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  address?: string;
+  email?: string;
+  phones?: Array<string>;
+  mapUrl?: string;
   seo?: Seo;
 };
 
@@ -505,7 +507,6 @@ export type SiteSettings = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -604,7 +605,20 @@ export type Footer = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  columns?: Array<{
+    title?: string;
+    links?: Array<
+      {
+        _key: string;
+      } & Link
+    >;
+    _key: string;
+  }>;
+  legalLinks?: Array<
+    {
+      _key: string;
+    } & Link
+  >;
   seo?: Seo;
 };
 
@@ -703,8 +717,15 @@ export type Cta = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  primaryCta?: Link;
+  secondaryCta?: Link;
   seo?: Seo;
+};
+
+export type Link = {
+  _type: "link";
+  label?: string;
+  href?: string;
 };
 
 export type Faq = {
@@ -802,7 +823,7 @@ export type Faq = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  answer?: string;
   seo?: Seo;
 };
 
@@ -901,7 +922,7 @@ export type Event = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  eventDate?: string;
   seo?: Seo;
 };
 
@@ -1000,7 +1021,6 @@ export type CaseStudy = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -1099,7 +1119,6 @@ export type SuccessStory = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -1198,7 +1217,9 @@ export type Testimonial = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
+  quote?: string;
+  personName?: string;
+  personRole?: string;
   seo?: Seo;
 };
 
@@ -1297,7 +1318,6 @@ export type ClientLogo = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -1396,13 +1416,118 @@ export type Industry = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
+};
+
+export type ServiceCategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "serviceCategory";
 };
 
 export type Service = {
   _id: string;
   _type: "service";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  summary?: string;
+  eyebrow?: string;
+  active?: boolean;
+  featured?: boolean;
+  accessibleLabel?: string;
+  websiteUrl?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  body?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?:
+          "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: SanityImageAssetReference;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+        _key: string;
+      }
+  >;
+  order?: number;
+  features?: Array<string>;
+  benefits?: Array<string>;
+  parent?: ServiceCategoryReference;
+  gallery?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  relatedServices?: Array<
+    {
+      _key: string;
+    } & ServiceReference
+  >;
+  relatedSolutions?: Array<
+    {
+      _key: string;
+    } & SolutionReference
+  >;
+  relatedIndustries?: Array<
+    {
+      _key: string;
+    } & IndustryReference
+  >;
+  relatedClients?: Array<
+    {
+      _key: string;
+    } & ClientLogoReference
+  >;
+  relatedStories?: ArrayOf<SuccessStoryReference | CaseStudyReference>;
+  youtubeUrls?: Array<string>;
+  faqs?: Array<
+    {
+      _key: string;
+    } & FaqReference
+  >;
+  socialLinks?: Array<{
+    label?: string;
+    url?: string;
+    _key: string;
+  }>;
+  seo?: Seo;
+};
+
+export type ServiceCategory = {
+  _id: string;
+  _type: "serviceCategory";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -1495,7 +1620,6 @@ export type Service = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -1594,7 +1718,6 @@ export type Product = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -1693,7 +1816,6 @@ export type Solution = {
     url?: string;
     _key: string;
   }>;
-  status?: "draft" | "published";
   seo?: Seo;
 };
 
@@ -1715,13 +1837,6 @@ export type Navigation = {
     _key: string;
   }>;
   contactCta?: Link;
-  status?: "draft" | "published";
-};
-
-export type Link = {
-  _type: "link";
-  label?: string;
-  href?: string;
 };
 
 export type TestimonialReference = {
@@ -1766,7 +1881,14 @@ export type Homepage = {
     | CtaReference
   >;
   seo?: Seo;
-  status?: "draft" | "published";
+  sectionContent?: Array<{
+    key?: string;
+    eyebrow?: string;
+    heading?: string;
+    description?: string;
+    cta?: Link;
+    _key: string;
+  }>;
 };
 
 export type SanityFileAssetReference = {
@@ -1921,6 +2043,7 @@ export type AllSanitySchemaTypes =
   | SiteSettings
   | Footer
   | Cta
+  | Link
   | Faq
   | Event
   | CaseStudy
@@ -1928,11 +2051,12 @@ export type AllSanitySchemaTypes =
   | Testimonial
   | ClientLogo
   | Industry
+  | ServiceCategoryReference
   | Service
+  | ServiceCategory
   | Product
   | Solution
   | Navigation
-  | Link
   | TestimonialReference
   | EventReference
   | CtaReference
@@ -1947,3 +2071,271 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_HOMEPAGE
+// Query: *[_type=="homepage"][0]{_id,_updatedAt,title}
+export type TYPEGEN_HOMEPAGE_RESULT = {
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+} | null;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_CLIENTS
+// Query: *[_type=="clientLogo"&&active!=false]{_id,_updatedAt,title,"slug":slug.current,"imageUrl":image.asset->url}
+export type TYPEGEN_CLIENTS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+  imageUrl: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_SOLUTIONS
+// Query: *[_type=="solution"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_SOLUTIONS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_PRODUCTS
+// Query: *[_type=="product"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_PRODUCTS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_SERVICE_CATEGORIES
+// Query: *[_type=="serviceCategory"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_SERVICE_CATEGORIES_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_SERVICES
+// Query: *[_type=="service"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_SERVICES_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_INDUSTRIES
+// Query: *[_type=="industry"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_INDUSTRIES_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_STORIES
+// Query: *[_type=="successStory"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_STORIES_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_CASE_STUDIES
+// Query: *[_type=="caseStudy"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_CASE_STUDIES_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_TESTIMONIALS
+// Query: *[_type=="testimonial"&&active!=false]{_id,_updatedAt,title,quote}
+export type TYPEGEN_TESTIMONIALS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  quote: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_EVENTS
+// Query: *[_type=="event"&&active!=false]{_id,_updatedAt,title,eventDate}
+export type TYPEGEN_EVENTS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  eventDate: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_FAQS
+// Query: *[_type=="faq"&&active!=false]{_id,_updatedAt,title,answer}
+export type TYPEGEN_FAQS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  answer: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_CTAS
+// Query: *[_type=="cta"&&active!=false]{_id,_updatedAt,title,primaryCta}
+export type TYPEGEN_CTAS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  primaryCta: Link | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_VIDEOS
+// Query: *[_type=="videoEmbed"&&active!=false]{_id,_updatedAt,title,embedUrl}
+export type TYPEGEN_VIDEOS_RESULT = Array<{
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  embedUrl: string | null;
+}>;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_NAVIGATION
+// Query: *[_type=="navigation"][0]{_id,_updatedAt,title}
+export type TYPEGEN_NAVIGATION_RESULT = {
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+} | null;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_FOOTER
+// Query: *[_type=="footer"][0]{_id,_updatedAt,title}
+export type TYPEGEN_FOOTER_RESULT = {
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+} | null;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_SITE
+// Query: *[_type=="siteSettings"][0]{_id,_updatedAt,title}
+export type TYPEGEN_SITE_RESULT = {
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+} | null;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_CONTACT
+// Query: *[_type=="contactSettings"][0]{_id,_updatedAt,title,email}
+export type TYPEGEN_CONTACT_RESULT = {
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  email: string | null;
+} | null;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_PAGE
+// Query: *[_type=="generalPage"&&slug.current==$slug&&active!=false][0]{_id,_updatedAt,title,"slug":slug.current}
+export type TYPEGEN_PAGE_RESULT = {
+  _id: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: string | null;
+} | null;
+
+// Source: sanity/lib/typegen-queries.ts
+// Variable: TYPEGEN_SITEMAP
+// Query: *[_type in ["service","solution","product","industry","successStory","caseStudy","event","generalPage"]&&active!=false]{_id,_type,"slug":slug.current,_updatedAt}
+export type TYPEGEN_SITEMAP_RESULT = Array<
+  | {
+      _id: string;
+      _type: "caseStudy";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "event";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "generalPage";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "industry";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "product";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "service";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "solution";
+      slug: string | null;
+      _updatedAt: string;
+    }
+  | {
+      _id: string;
+      _type: "successStory";
+      slug: string | null;
+      _updatedAt: string;
+    }
+>;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    '*[_type=="homepage"][0]{_id,_updatedAt,title}': TYPEGEN_HOMEPAGE_RESULT;
+    '*[_type=="clientLogo"&&active!=false]{_id,_updatedAt,title,"slug":slug.current,"imageUrl":image.asset->url}': TYPEGEN_CLIENTS_RESULT;
+    '*[_type=="solution"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_SOLUTIONS_RESULT;
+    '*[_type=="product"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_PRODUCTS_RESULT;
+    '*[_type=="serviceCategory"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_SERVICE_CATEGORIES_RESULT;
+    '*[_type=="service"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_SERVICES_RESULT;
+    '*[_type=="industry"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_INDUSTRIES_RESULT;
+    '*[_type=="successStory"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_STORIES_RESULT;
+    '*[_type=="caseStudy"&&active!=false]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_CASE_STUDIES_RESULT;
+    '*[_type=="testimonial"&&active!=false]{_id,_updatedAt,title,quote}': TYPEGEN_TESTIMONIALS_RESULT;
+    '*[_type=="event"&&active!=false]{_id,_updatedAt,title,eventDate}': TYPEGEN_EVENTS_RESULT;
+    '*[_type=="faq"&&active!=false]{_id,_updatedAt,title,answer}': TYPEGEN_FAQS_RESULT;
+    '*[_type=="cta"&&active!=false]{_id,_updatedAt,title,primaryCta}': TYPEGEN_CTAS_RESULT;
+    '*[_type=="videoEmbed"&&active!=false]{_id,_updatedAt,title,embedUrl}': TYPEGEN_VIDEOS_RESULT;
+    '*[_type=="navigation"][0]{_id,_updatedAt,title}': TYPEGEN_NAVIGATION_RESULT;
+    '*[_type=="footer"][0]{_id,_updatedAt,title}': TYPEGEN_FOOTER_RESULT;
+    '*[_type=="siteSettings"][0]{_id,_updatedAt,title}': TYPEGEN_SITE_RESULT;
+    '*[_type=="contactSettings"][0]{_id,_updatedAt,title,email}': TYPEGEN_CONTACT_RESULT;
+    '*[_type=="generalPage"&&slug.current==$slug&&active!=false][0]{_id,_updatedAt,title,"slug":slug.current}': TYPEGEN_PAGE_RESULT;
+    '*[_type in ["service","solution","product","industry","successStory","caseStudy","event","generalPage"]&&active!=false]{_id,_type,"slug":slug.current,_updatedAt}': TYPEGEN_SITEMAP_RESULT;
+  }
+}
