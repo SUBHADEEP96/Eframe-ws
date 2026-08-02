@@ -14,6 +14,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FAQ } from "@/components/faq";
 import { homepage } from "@/lib/content";
+import { ClientMarquee } from "@/components/client-marquee";
 
 export const metadata: Metadata = {
   title: "Enterprise Learning, Immersive & Digital Solutions",
@@ -193,19 +194,7 @@ export default function Home() {
                 Clients at a glance
               </h2>
             </div>
-            <div className="logo-grid mt-12">
-              {homepage.clients.map((client) => (
-                <div className="logo-cell" key={client.name}>
-                  <Image
-                    src={client.logo}
-                    alt={`${client.name} logo`}
-                    width={150}
-                    height={70}
-                    className="max-h-12 w-auto object-contain grayscale transition duration-300 hover:grayscale-0"
-                  />
-                </div>
-              ))}
-            </div>
+            <div className="mt-12"><ClientMarquee /></div>
           </div>
         </section>
 
@@ -222,7 +211,7 @@ export default function Home() {
           <div className="grid gap-6 md:grid-cols-3">
             {homepage.stories.map((story, index) => (
               <Link
-                href="/success-stories"
+                href={`/success-stories/${["ceat-vr-training","vesuvius-interactive-learning","vesuvius-digital-permit-to-work"][index]}`}
                 className={`story-card ${index === 0 ? "md:col-span-2" : ""}`}
                 key={story.title}
               >

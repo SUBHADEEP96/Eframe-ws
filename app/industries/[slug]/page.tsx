@@ -1,0 +1,2 @@
+import { notFound } from "next/navigation"; import { CatalogDetail } from "@/components/catalog-pages"; import { industries } from "@/lib/catalog";
+type Props={params:Promise<{slug:string}>}; export function generateStaticParams(){return industries.map(({slug})=>({slug}))}; export default async function Page({params}:Props){const {slug}=await params;const x=industries.find(i=>i.slug===slug);if(!x)notFound();return <CatalogDetail item={x} section="Industries"/>}

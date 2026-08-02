@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { serviceGroups } from "@/lib/content";
+import { caseStudies, industries, solutions, stories } from "@/lib/catalog";
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://eframe.in";
   const services = serviceGroups.flatMap((group) => [
@@ -18,6 +19,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/about",
     "/contact",
     ...services,
+    ...solutions.map((item)=>`/solutions/${item.slug}`),
+    ...industries.map((item)=>`/industries/${item.slug}`),
+    ...stories.map((item)=>`/success-stories/${item.slug}`),
+    ...caseStudies.map((item)=>`/case-studies/${item.slug}`),
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),

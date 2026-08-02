@@ -1,0 +1,11 @@
+import {createClient} from "@sanity/client";
+const projectId=process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,dataset=process.env.NEXT_PUBLIC_SANITY_DATASET||"production",token=process.env.SANITY_API_WRITE_TOKEN;
+if(!projectId||!token) throw new Error("Set NEXT_PUBLIC_SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN before seeding.");
+const client=createClient({projectId,dataset,token,apiVersion:"2026-08-01",useCdn:false});
+const solutions=["Elevox","Drive 360","AI-Enabled Solutions","Safety Management System","Immersive Technology"];
+const clients=["Unilever","ITC","Coca-Cola","Vesuvius","Amazon","Alstom","thyssenkrupp","CEAT","TCG Lifesciences","Himadri","Emami","GE","UGL","Experience Bengal","NSDC","Techno Canada","CLP India","Scarborough Cares","Apraava","Tata","Castrol","Berger"];
+const slug=x=>x.toLowerCase().replace(/&/g,"and").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const docs=[...solutions.map((title,order)=>({_id:`solution-${slug(title)}`,_type:"solution",title,slug:{_type:"slug",current:slug(title)},summary:"Verified initial content is available on the public website and can be expanded here.",order,status:"published",active:true})),...clients.map((title,order)=>({_id:`client-${slug(title)}`,_type:"clientLogo",title,slug:{_type:"slug",current:slug(title)},accessibleLabel:`${title} client logo`,order,status:"published",active:true,featured:order<12}))];
+docs.push({_id:"site-settings",_type:"siteSettings",title:"Eframe site settings",slug:{_type:"slug",current:"site-settings"},summary:"Eframe Infomedia Pvt. Ltd.",status:"published",active:true,socialLinks:[{_key:"linkedin",label:"LinkedIn",url:"https://www.linkedin.com/company/28124515/"},{_key:"facebook",label:"Facebook",url:"https://www.facebook.com/eframe.infomedia"},{_key:"youtube",label:"YouTube",url:"https://youtube.com/channel/UC-CUXTkd1dwbyPSCN-yadnw"},{_key:"instagram",label:"Instagram",url:"https://www.instagram.com/eframehub/"}]});
+for(const doc of docs) await client.createIfNotExists(doc);
+console.log(`Seed complete: ${solutions.length} solutions, ${clients.length} clients, 1 site settings document. Existing deterministic documents were preserved.`);

@@ -40,3 +40,9 @@ Open `http://localhost:3000` to view the site.
 
 - This site uses the `public/` directory for static assets and expects asset URLs to start with `/`.
 - The design currently uses custom brand styling through CSS variables rather than hard-coded colors.
+
+## CMS seed and enquiry delivery
+
+Copy `.env.example` to `.env.local`. Run `npm run seed:sanity` with a Sanity write token to create deterministic initial documents; the script uses guarded `createIfNotExists` operations and is safe to rerun. Existing documents are not overwritten.
+
+Contact delivery uses the Resend HTTP API only on the server. Configure `RESEND_API_KEY`, a verified `CONTACT_FROM_EMAIL`, and optionally `CONTACT_TO_EMAIL` (defaults to `info@eframe.in`). The visitor address is used only as Reply-To. Without those credentials the form returns an honest configuration message and the page retains direct phone and email links.
