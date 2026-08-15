@@ -21,7 +21,7 @@ export function ClienteleSection({ clients }: { clients: ClientLogo[] }) {
           {unique.map((client) => (
             <Card key={client.id} className="group min-w-0 border-border/70 bg-card/90 py-0 shadow-sm transition duration-300 motion-reduce:transition-none hover:-translate-y-1 hover:shadow-lg motion-reduce:hover:translate-y-0">
               <CardContent className="relative flex aspect-[1.55] items-center justify-center p-5 sm:p-6">
-                <Image src={client.logo} alt={client.alt || `${client.name} logo`} fill sizes="(max-width: 640px) 42vw, (max-width: 1024px) 22vw, 180px" className="object-contain p-5 grayscale transition duration-300 motion-reduce:transition-none group-hover:grayscale-0" />
+                <Image src={client.logo} alt={client.alt || `${client.name} logo`} fill sizes="(max-width: 640px) 42vw, (max-width: 1024px) 22vw, 180px" className="object-contain p-5" />
               </CardContent>
             </Card>
           ))}

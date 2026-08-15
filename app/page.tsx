@@ -107,40 +107,64 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="overflow-hidden bg-ink py-24 text-white sm:py-32">
-          <div className="section-shell grid gap-14 lg:grid-cols-[.82fr_1.18fr] lg:items-center">
+        <section className="welcome-section" aria-labelledby="welcome-heading">
+          <div className="section-shell grid gap-14 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
             <div>
-              <div className="section-kicker text-primary">
-                Strategy + solutions
-              </div>
-              <h2 className="display-title max-w-xl text-white">
-                The right technology begins with the right question.
+              <div className="section-kicker">Who we are</div>
+              <h2 id="welcome-heading" className="display-title max-w-3xl">
+                Welcome to <span className="text-primary">Eframe.</span>
+                <br />
+                Ideas built to make an impact.
               </h2>
-              <p className="mt-7 max-w-xl text-lg leading-8 text-white/65">
-                We connect business priorities to practical learning and digital
-                systems—so teams can perform with greater confidence,
-                consistency and visibility.
+              <p className="section-copy mt-7">
+                Eframe Infomedia brings focused creativity, strategic thinking
+                and technology together to solve real business challenges. We
+                turn ambitious ideas into learning, immersive and digital
+                experiences that are clear, useful and built to perform.
               </p>
-              <Link href="/services" className="text-link mt-9">
-                Explore our approach <ArrowRight />
+              <p className="section-copy mt-4">
+                From creative design and film to process digitisation and
+                Industry 4.0 solutions, our multidisciplinary team delivers
+                work that keeps pace with an ever-evolving world.
+              </p>
+
+              <div className="welcome-principles" aria-label="Our creative principles">
+                {["Convenient", "Consistent", "Cost-effective"].map((item, index) => (
+                  <div className="welcome-principle" key={item}>
+                    <span>0{index + 1}</span>
+                    <p>{item}</p>
+                  </div>
+                ))}
+              </div>
+
+              <Link href="/about-us" className="text-link mt-9 text-foreground">
+                Discover our story <ArrowRight />
               </Link>
             </div>
-            <div
-              className="strategy-orbit"
-              aria-label="Eframe delivery approach"
-            >
-              <div className="strategy-core">
-                <span>
-                  Business
-                  <br />
-                  outcome
-                </span>
+
+            <div className="welcome-visual">
+              <div className="welcome-image welcome-image-main">
+                <Image
+                  src="/Virtual-Reality-banner.png"
+                  alt="Eframe immersive technology experience"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  className="object-cover"
+                />
               </div>
-              {["Discover", "Design", "Build", "Measure"].map((item, index) => (
-                <span className={`orbit-label orbit-${index + 1}`} key={item}>
-                  {item}
-                </span>
-              ))}
+              <div className="welcome-image welcome-image-secondary">
+                <Image
+                  src="/Process-Digitization-banner.png"
+                  alt="Eframe process digitisation solution"
+                  fill
+                  sizes="(max-width: 640px) 48vw, 260px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="welcome-note">
+                <span>Ideas that</span>
+                <strong>win battles, set trends and speak for themselves.</strong>
+              </div>
             </div>
           </div>
         </section>
