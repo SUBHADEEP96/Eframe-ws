@@ -14,7 +14,12 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FAQ } from "@/components/faq";
 import { homepage } from "@/lib/content";
-import { ClientMarquee } from "@/components/client-marquee";
+import { ClienteleSection } from "@/components/eframe/sections/clientele-section";
+import { SuccessStoriesSection } from "@/components/eframe/sections/success-stories-section";
+import { EventsCarouselSection } from "@/components/eframe/sections/events-carousel-section";
+import { fallbackClients, fallbackEvents, fallbackStories, type ClientLogo, type EventGlimpse, type SuccessStory } from "@/components/eframe/data/homepage-sections";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import { CLIENT_LOGOS_QUERY, EVENTS_QUERY, SUCCESS_STORIES_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Enterprise Learning, Immersive & Digital Solutions",
@@ -24,7 +29,19 @@ export const metadata: Metadata = {
 
 const icons = [Layers3, Sparkles, BrainCircuit, ShieldCheck, Clapperboard];
 
-export default function Home() {
+type CmsClient = { _id: string; name?: string; logo?: string; displayLabel?: string };
+type CmsStory = { _id: string; title?: string; slug?: string; client?: string; category?: string; summary?: string; bodyText?: string; image?: { url?: string; alt?: string } };
+type CmsEvent = { _id: string; title?: string; eventDate?: string; alt?: string; image?: { url?: string; alt?: string } };
+
+export default async function Home() {
+  const [cmsClients, cmsStories, cmsEvents] = await Promise.all([
+    sanityFetch<CmsClient[]>(CLIENT_LOGOS_QUERY, { tags: ["clientele"] }),
+    sanityFetch<CmsStory[]>(SUCCESS_STORIES_QUERY, { tags: ["successStories"] }),
+    sanityFetch<CmsEvent[]>(EVENTS_QUERY, { tags: ["events"] }),
+  ]);
+  const clients: ClientLogo[] = cmsClients?.filter((item) => item.logo && item.name).map((item) => ({ id: item._id, name: item.name!, logo: item.logo!, alt: item.displayLabel || `${item.name} logo` })) || [];
+  const stories: SuccessStory[] = cmsStories?.filter((item) => item.image?.url && item.title && item.category).map((item) => ({ id: item._id, title: item.title!, slug: item.slug || item._id, client: item.client || "Eframe", category: item.category!, excerpt: item.summary || item.bodyText || "Discover how Eframe transformed this business challenge into a purposeful experience.", image: item.image!.url!, alt: item.image?.alt || item.title! })) || [];
+  const events: EventGlimpse[] = cmsEvents?.filter((item) => item.image?.url && item.title).map((item) => ({ id: item._id, title: item.title!, image: item.image!.url!, alt: item.alt || item.image?.alt || item.title!, date: item.eventDate })) || [];
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -90,40 +107,66 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="overflow-hidden bg-ink py-24 text-white sm:py-32">
-          <div className="section-shell grid gap-14 lg:grid-cols-[.82fr_1.18fr] lg:items-center">
+        <section className="relative overflow-hidden bg-ink py-24 text-white sm:py-32" aria-labelledby="welcome-heading">
+          <div aria-hidden="true" className="absolute -right-24 -top-24 size-96 rounded-full bg-primary/15 blur-3xl" />
+          <div className="section-shell relative grid gap-14 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
             <div>
-              <div className="section-kicker text-primary">
-                Strategy + solutions
-              </div>
-              <h2 className="display-title max-w-xl text-white">
-                The right technology begins with the right question.
+              <div className="section-kicker text-primary">Welcome to Eframe</div>
+              <h2 id="welcome-heading" className="display-title max-w-3xl text-white">
+                Creative thinking, built for meaningful business change.
               </h2>
-              <p className="mt-7 max-w-xl text-lg leading-8 text-white/65">
-                We connect business priorities to practical learning and digital
-                systems—so teams can perform with greater confidence,
-                consistency and visibility.
-              </p>
-              <Link href="/services" className="text-link mt-9">
-                Explore our approach <ArrowRight />
+              <div className="mt-7 flex max-w-2xl flex-col gap-5 text-base leading-7 text-white/70 sm:text-lg sm:leading-8">
+                <p>
+                  Eframe Infomedia brings focused creativity, strategic thinking
+                  and technology together to solve real communication, learning
+                  and operational challenges.
+                </p>
+                <p>
+                  From films, animation and immersive experiences to process
+                  digitisation and Industry 4.0 applications, our teams shape
+                  every solution around clarity, relevance and lasting value.
+                </p>
+              </div>
+              <div className="mt-9 grid max-w-2xl gap-3 sm:grid-cols-3" aria-label="Eframe creative principles">
+                {["Convenient", "Consistent", "Cost-effective"].map((principle, index) => (
+                  <div key={principle} className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                    <span className="text-xs font-semibold text-primary">0{index + 1}</span>
+                    <p className="mt-2 font-semibold text-white">Be {principle}</p>
+                  </div>
+                ))}
+              </div>
+              <Link href="/contact" className="text-link mt-9">
+                Start a conversation <ArrowRight />
               </Link>
             </div>
-            <div
-              className="strategy-orbit"
-              aria-label="Eframe delivery approach"
-            >
-              <div className="strategy-core">
-                <span>
-                  Business
-                  <br />
-                  outcome
-                </span>
+
+            <div className="relative mx-auto w-full max-w-2xl pb-12 sm:pb-16" aria-label="Eframe immersive and digital work">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] border border-white/10 bg-muted shadow-2xl">
+                <Image
+                  src="/ehs-next.jpg"
+                  alt="Eframe health and safety digital solution"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+                <p className="absolute bottom-6 left-6 max-w-xs text-xl font-semibold sm:bottom-8 sm:left-8 sm:text-2xl">
+                  Ideas that move people, teams and industries forward.
+                </p>
               </div>
-              {["Discover", "Design", "Build", "Measure"].map((item, index) => (
-                <span className={`orbit-label orbit-${index + 1}`} key={item}>
-                  {item}
-                </span>
-              ))}
+              <div className="absolute -bottom-1 right-3 aspect-[4/3] w-[46%] overflow-hidden rounded-2xl border-4 border-[#161714] bg-muted shadow-2xl sm:right-8">
+                <Image
+                  src="/VRSimulator.jpg"
+                  alt="Eframe virtual reality driving simulator"
+                  fill
+                  sizes="(max-width: 640px) 44vw, 280px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute -left-2 bottom-3 rounded-2xl border border-white/10 bg-black/80 px-5 py-4 backdrop-blur-md sm:left-6 sm:bottom-8">
+                <p className="text-xs font-semibold uppercase tracking-[.18em] text-primary">Creative + technology</p>
+                <p className="mt-1 text-sm font-medium text-white">One integrated partner</p>
+              </div>
             </div>
           </div>
         </section>
@@ -178,66 +221,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="bg-soft py-20 sm:py-24"
-          aria-labelledby="clients-heading"
-        >
-          <div className="section-shell">
-            <div className="text-center">
-              <div className="section-kicker justify-center">
-                Trusted relationships
-              </div>
-              <h2
-                id="clients-heading"
-                className="text-3xl font-semibold sm:text-4xl"
-              >
-                Clients at a glance
-              </h2>
-            </div>
-            <div className="mt-12"><ClientMarquee /></div>
-          </div>
-        </section>
+        <ClienteleSection clients={clients.length ? clients : fallbackClients} />
 
-        <section className="section-shell py-24 sm:py-32">
-          <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="section-kicker">Selected work</div>
-              <h2 className="display-title">Ideas, made tangible.</h2>
-            </div>
-            <Link className="text-link text-foreground" href="/success-stories">
-              View success stories <ArrowRight />
-            </Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {homepage.stories.map((story, index) => (
-              <Link
-                href={`/success-stories/${["ceat-vr-training","vesuvius-interactive-learning","vesuvius-digital-permit-to-work"][index]}`}
-                className={`story-card ${index === 0 ? "md:col-span-2" : ""}`}
-                key={story.title}
-              >
-                <Image
-                  src={story.image}
-                  alt={story.alt}
-                  fill
-                  sizes={
-                    index === 0
-                      ? "(max-width: 768px) 100vw, 66vw"
-                      : "(max-width: 768px) 100vw, 33vw"
-                  }
-                  className="object-cover transition duration-700 hover:scale-105"
-                />
-                <span className="story-overlay">
-                  <span className="text-xs font-semibold uppercase tracking-[.18em] text-primary">
-                    {story.category}
-                  </span>
-                  <span className="mt-2 block max-w-lg text-2xl font-semibold text-white sm:text-3xl">
-                    {story.title}
-                  </span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <SuccessStoriesSection stories={stories.length ? stories : fallbackStories} />
+
+        <EventsCarouselSection events={events.length ? events : fallbackEvents} />
 
         <section className="bg-primary py-24 sm:py-28">
           <div className="section-shell grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">

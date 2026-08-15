@@ -270,41 +270,6 @@
   .feature-pill {
     @apply flex items-center gap-3 rounded-xl bg-muted px-4 py-4 text-sm font-medium;
   }
-  .strategy-orbit {
-    @apply relative mx-auto aspect-square w-full max-w-[570px] rounded-full border border-white/10;
-    background: radial-gradient(
-      circle,
-      rgba(238, 133, 26, 0.18),
-      transparent 58%
-    );
-  }
-  .strategy-orbit:before,
-  .strategy-orbit:after {
-    content: "";
-    @apply absolute rounded-full border border-white/10;
-    inset: 14%;
-  }
-  .strategy-orbit:after {
-    inset: 31%;
-  }
-  .strategy-core {
-    @apply absolute left-1/2 top-1/2 z-10 flex size-40 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-center text-xl font-semibold text-black shadow-2xl sm:size-48 sm:text-2xl;
-  }
-  .orbit-label {
-    @apply absolute z-20 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm backdrop-blur;
-  }
-  .orbit-1 {
-    @apply left-[11%] top-[18%];
-  }
-  .orbit-2 {
-    @apply right-[4%] top-[33%];
-  }
-  .orbit-3 {
-    @apply bottom-[11%] right-[24%];
-  }
-  .orbit-4 {
-    @apply bottom-[27%] left-[2%];
-  }
   .logo-grid {
     @apply grid grid-cols-2 overflow-hidden rounded-2xl border border-border bg-white sm:grid-cols-4;
   }
