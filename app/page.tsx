@@ -14,7 +14,12 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FAQ } from "@/components/faq";
 import { homepage } from "@/lib/content";
-import { ClientMarquee } from "@/components/client-marquee";
+import { ClienteleSection } from "@/components/eframe/sections/clientele-section";
+import { SuccessStoriesSection } from "@/components/eframe/sections/success-stories-section";
+import { EventsCarouselSection } from "@/components/eframe/sections/events-carousel-section";
+import { fallbackClients, fallbackEvents, fallbackStories, type ClientLogo, type EventGlimpse, type SuccessStory } from "@/components/eframe/data/homepage-sections";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import { CLIENT_LOGOS_QUERY, EVENTS_QUERY, SUCCESS_STORIES_QUERY } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "Enterprise Learning, Immersive & Digital Solutions",
@@ -24,7 +29,19 @@ export const metadata: Metadata = {
 
 const icons = [Layers3, Sparkles, BrainCircuit, ShieldCheck, Clapperboard];
 
-export default function Home() {
+type CmsClient = { _id: string; name?: string; logo?: string; displayLabel?: string };
+type CmsStory = { _id: string; title?: string; slug?: string; client?: string; category?: string; summary?: string; bodyText?: string; image?: { url?: string; alt?: string } };
+type CmsEvent = { _id: string; title?: string; eventDate?: string; alt?: string; image?: { url?: string; alt?: string } };
+
+export default async function Home() {
+  const [cmsClients, cmsStories, cmsEvents] = await Promise.all([
+    sanityFetch<CmsClient[]>(CLIENT_LOGOS_QUERY, { tags: ["clientele"] }),
+    sanityFetch<CmsStory[]>(SUCCESS_STORIES_QUERY, { tags: ["successStories"] }),
+    sanityFetch<CmsEvent[]>(EVENTS_QUERY, { tags: ["events"] }),
+  ]);
+  const clients: ClientLogo[] = cmsClients?.filter((item) => item.logo && item.name).map((item) => ({ id: item._id, name: item.name!, logo: item.logo!, alt: item.displayLabel || `${item.name} logo` })) || [];
+  const stories: SuccessStory[] = cmsStories?.filter((item) => item.image?.url && item.title && item.category).map((item) => ({ id: item._id, title: item.title!, slug: item.slug || item._id, client: item.client || "Eframe", category: item.category!, excerpt: item.summary || item.bodyText || "Discover how Eframe transformed this business challenge into a purposeful experience.", image: item.image!.url!, alt: item.image?.alt || item.title! })) || [];
+  const events: EventGlimpse[] = cmsEvents?.filter((item) => item.image?.url && item.title).map((item) => ({ id: item._id, title: item.title!, image: item.image!.url!, alt: item.alt || item.image?.alt || item.title!, date: item.eventDate })) || [];
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -178,66 +195,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          className="bg-soft py-20 sm:py-24"
-          aria-labelledby="clients-heading"
-        >
-          <div className="section-shell">
-            <div className="text-center">
-              <div className="section-kicker justify-center">
-                Trusted relationships
-              </div>
-              <h2
-                id="clients-heading"
-                className="text-3xl font-semibold sm:text-4xl"
-              >
-                Clients at a glance
-              </h2>
-            </div>
-            <div className="mt-12"><ClientMarquee /></div>
-          </div>
-        </section>
+        <ClienteleSection clients={clients.length ? clients : fallbackClients} />
 
-        <section className="section-shell py-24 sm:py-32">
-          <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="section-kicker">Selected work</div>
-              <h2 className="display-title">Ideas, made tangible.</h2>
-            </div>
-            <Link className="text-link text-foreground" href="/success-stories">
-              View success stories <ArrowRight />
-            </Link>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {homepage.stories.map((story, index) => (
-              <Link
-                href={`/success-stories/${["ceat-vr-training","vesuvius-interactive-learning","vesuvius-digital-permit-to-work"][index]}`}
-                className={`story-card ${index === 0 ? "md:col-span-2" : ""}`}
-                key={story.title}
-              >
-                <Image
-                  src={story.image}
-                  alt={story.alt}
-                  fill
-                  sizes={
-                    index === 0
-                      ? "(max-width: 768px) 100vw, 66vw"
-                      : "(max-width: 768px) 100vw, 33vw"
-                  }
-                  className="object-cover transition duration-700 hover:scale-105"
-                />
-                <span className="story-overlay">
-                  <span className="text-xs font-semibold uppercase tracking-[.18em] text-primary">
-                    {story.category}
-                  </span>
-                  <span className="mt-2 block max-w-lg text-2xl font-semibold text-white sm:text-3xl">
-                    {story.title}
-                  </span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
+        <SuccessStoriesSection stories={stories.length ? stories : fallbackStories} />
+
+        <EventsCarouselSection events={events.length ? events : fallbackEvents} />
 
         <section className="bg-primary py-24 sm:py-28">
           <div className="section-shell grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">

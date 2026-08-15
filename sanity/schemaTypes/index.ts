@@ -153,6 +153,28 @@ const contentDoc = (name: string, title: string) =>
         validation: (r) => r.required(),
       }),
       defineField({ name: "summary", type: "text", rows: 3 }),
+      ...(name === "successStory" || name === "caseStudy"
+        ? [
+            defineField({ name: "client", type: "string" }),
+            defineField({
+              name: "category",
+              type: "string",
+              options: {
+                list: [
+                  "Film Production",
+                  "Virtual Reality",
+                  "Process Digitization",
+                  "Simulation Games",
+                  "Creative Design",
+                ],
+              },
+              validation: (r) => r.required(),
+            }),
+          ]
+        : []),
+      ...(name === "event"
+        ? [defineField({ name: "eventDate", type: "date" })]
+        : []),
       defineField({ name: "eyebrow", type: "string" }),
       defineField({ name: "active", type: "boolean", initialValue: true }),
       defineField({ name: "featured", type: "boolean", initialValue: false }),

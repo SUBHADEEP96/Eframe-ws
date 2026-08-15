@@ -221,12 +221,13 @@ export const TESTIMONIALS_QUERY = defineQuery(`
 
 export const EVENTS_QUERY = defineQuery(`
   *[
-    _type == "event" &&
+    _type in ["event", "eventGlimpse"] &&
     active != false
   ]
   | order(coalesce(order, 9999) asc, title asc){
       ${card},
-      eventDate
+      eventDate,
+      "alt": coalesce(image.alt, accessibleLabel, title)
     }
 `);
 
