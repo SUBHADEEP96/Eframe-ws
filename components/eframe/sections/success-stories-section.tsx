@@ -24,7 +24,7 @@ function StoryGrid({ stories }: { stories: SuccessStory[] }) {
       </CardHeader>
       <CardContent />
       <CardFooter>
-        <Button variant="ghost" render={<Link href={`/success-stories/${story.slug}`} />}>Read story <ArrowRight data-icon="inline-end" /></Button>
+        <Button variant="ghost" nativeButton={false} render={<Link href={`/success-stories/${story.slug}`} />}>Read story <ArrowRight data-icon="inline-end" /></Button>
       </CardFooter>
     </Card>)}
   </div>;
@@ -43,7 +43,7 @@ export function SuccessStoriesSection({ stories }: { stories: SuccessStory[] }) 
         <div className="overflow-x-auto pb-2"><TabsList className="mx-auto min-w-max">{categories.map((category) => <TabsTrigger key={category} value={category} className="min-h-11 px-4">{category}</TabsTrigger>)}</TabsList></div>
         {categories.map((category) => <TabsContent key={category} value={category}><StoryGrid stories={stories.filter((story) => story.category === category)} /></TabsContent>)}
       </Tabs>
-      <div className="mt-10 text-center"><Button variant="outline" render={<Link href="/success-stories" />}>View all success stories <ArrowRight data-icon="inline-end" /></Button></div>
+      <div className="mt-10 text-center"><Button variant="outline" nativeButton={false} render={<Link href="/success-stories" />}>View all success stories <ArrowRight data-icon="inline-end" /></Button></div>
     </div>
   </section>;
 }
