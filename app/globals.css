@@ -270,6 +270,60 @@
   .solution-shade {
     @apply absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10;
   }
+  .technology-section {
+    @apply bg-white py-20 sm:py-28;
+  }
+  .technology-intro {
+    @apply grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-end;
+  }
+  .technology-heading {
+    @apply text-4xl font-semibold leading-[.98] tracking-[-.05em] text-black sm:text-5xl lg:text-6xl;
+  }
+  .technology-copy {
+    @apply max-w-xl text-sm leading-7 text-muted-foreground lg:mb-1 lg:justify-self-end;
+  }
+  .technology-grid {
+    @apply mt-12 grid gap-3 md:grid-cols-2 lg:grid-cols-6;
+  }
+  .technology-card {
+    @apply relative min-h-[300px] overflow-hidden rounded-2xl bg-neutral-800 text-white md:min-h-[330px] lg:col-span-2;
+  }
+  .technology-card:first-child,
+  .technology-card:nth-child(2) {
+    @apply lg:col-span-3 lg:min-h-[400px];
+  }
+  .technology-card-image {
+    @apply object-cover transition duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100;
+  }
+  .technology-card-wash {
+    @apply absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/5;
+  }
+  .technology-card[data-accent="true"] .technology-card-image {
+    @apply mix-blend-multiply;
+  }
+  .technology-card[data-accent="true"] .technology-card-wash {
+    background: linear-gradient(to top, rgb(0 0 0 / 0.88), rgb(0 0 0 / 0.05) 75%),
+      rgb(215 218 0 / 0.78);
+    mix-blend-mode: hard-light;
+  }
+  .technology-card-icon {
+    @apply absolute left-6 top-6 z-10 size-6 text-primary;
+  }
+  .technology-card-content {
+    @apply absolute inset-x-0 bottom-0 z-10 p-6;
+  }
+  .technology-card-number {
+    @apply mb-2 block text-[10px] font-semibold tracking-[.14em] text-white/70;
+  }
+  .technology-card-content h3 {
+    @apply text-xl font-semibold leading-tight tracking-[-.02em];
+  }
+  .technology-card-content p {
+    @apply mt-3 max-w-lg text-xs leading-5 text-white/80;
+  }
+  .technology-card-arrow {
+    @apply mb-1 size-5 shrink-0 transition-transform group-hover:translate-x-1;
+  }
   .service-card {
     @apply flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl motion-reduce:transition-none motion-reduce:hover:translate-y-0;
   }

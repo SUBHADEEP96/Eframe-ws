@@ -10,6 +10,7 @@ import { homepage } from "@/lib/content";
 import { ClienteleSection } from "@/components/eframe/sections/clientele-section";
 import { SuccessStoriesSection } from "@/components/eframe/sections/success-stories-section";
 import { EventsCarouselSection } from "@/components/eframe/sections/events-carousel-section";
+import { TechnologySolutionsSection } from "@/components/technology-solutions-section";
 import { fallbackClients, fallbackEvents, fallbackStories, type ClientLogo, type EventGlimpse, type SuccessStory } from "@/components/eframe/data/homepage-sections";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { CLIENT_LOGOS_QUERY, EVENTS_QUERY, SUCCESS_STORIES_QUERY } from "@/sanity/lib/queries";
@@ -42,6 +43,8 @@ export default async function Home() {
         {["Creative learning", "Digital systems", "Immersive technology", "Enterprise communication"].map((item) => <li className="bg-primary p-4 text-sm font-semibold text-black sm:p-5" key={item}>{item}</li>)}
       </ul></div>
     </div></section>
+
+    <TechnologySolutionsSection />
 
     <section className="section-shell py-20 sm:py-28" id="services" aria-labelledby="services-heading">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center"><div className="section-kicker mb-0">What we do</div><h2 id="services-heading" className="display-title">Services built around the outcome.</h2><p className="section-copy">Eight connected capabilities, delivered with the right balance of creative thinking and technology.</p></div>
