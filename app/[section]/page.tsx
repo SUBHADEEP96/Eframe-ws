@@ -49,6 +49,13 @@ const pages: Record<
       "Eframe brings learning expertise, creative craft and technology capability together in one collaborative team.",
     image: "/exprience-bengal.jpg",
   },
+  career: {
+    title: "Do work that creates meaningful change.",
+    eyebrow: "Career at Eframe",
+    description:
+      "Join a multidisciplinary team bringing creativity, learning and technology together for real enterprise challenges.",
+    image: "/exprience-bengal.jpg",
+  },
   contact: {
     title: "Bring us your next challenge.",
     eyebrow: "Contact Eframe",

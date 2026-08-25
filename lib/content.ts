@@ -67,8 +67,8 @@ export const homepage = {
       desktopMedia: "/E-Learning-Solution-banner.png",
       mobileMedia: "/E-Learning-Solution-banner-mobile.png",
       mediaType: "image",
-      primaryCta: { label: "Know More", href: "/services/learning-solutions" },
-      secondaryCta: { label: "View PDF", href: "/eframe-profile.pdf" },
+      primaryCta: { label: "Explore Services", href: "/services" },
+      secondaryCta: { label: "View Profile", href: "/eframe-profile.pdf" },
       overlay: 0.64,
     },
     {
@@ -79,8 +79,8 @@ export const homepage = {
       mobileMedia: "/Virtual-Reality-banner-mobile.png",
       mediaType: "image",
       primaryCta: {
-        label: "Know More",
-        href: "/services/immersive-experiences",
+        label: "Explore Services",
+        href: "/services",
       },
       secondaryCta: {
         label: "View PDF",
@@ -96,13 +96,63 @@ export const homepage = {
       mobileMedia: "/Process-Digitization-banner-mobile.png",
       mediaType: "image",
       primaryCta: {
-        label: "Know More",
-        href: "/services/enterprise-solutions",
+        label: "Explore Services",
+        href: "/services",
       },
-      secondaryCta: { label: "View PDF", href: "/eframe-profile.pdf" },
+      secondaryCta: { label: "View Profile", href: "/eframe-profile.pdf" },
       overlay: 0.67,
     },
   ] satisfies HeroSlide[],
+  services: [
+    {
+      title: "Film Production",
+      description: "Purposeful films shaped by strong narratives and polished production.",
+      image: "/banner-film-production.png",
+      href: "/services/creative-studio/films",
+    },
+    {
+      title: "Creative Designs, Branding and Campaigns",
+      description: "Distinct visual systems and campaigns that make ideas resonate.",
+      image: "/Creative-Designs-Branding_banner.png",
+      href: "/services/creative-studio/branding-campaigns",
+    },
+    {
+      title: "Virtual Reality and Augmented Reality",
+      description: "Immersive environments for safe, memorable hands-on practice.",
+      image: "/Virtual-Reality-banner.png",
+      href: "/services/immersive-experiences/vr-ar",
+    },
+    {
+      title: "Process Digitization",
+      description: "Connected workflows that simplify critical enterprise processes.",
+      image: "/Process-Digitization-banner.png",
+      href: "/services/enterprise-solutions/process-digitization",
+    },
+    {
+      title: "E-Learning Solution",
+      description: "Engaging digital learning designed around real performance needs.",
+      image: "/E-Learning-Solution-banner.png",
+      href: "/services/learning-solutions/e-learning",
+    },
+    {
+      title: "Learning Management System",
+      description: "A connected platform for delivering and managing capability.",
+      image: "/Learning-Management-System-banner.png",
+      href: "/services/learning-solutions/lms",
+    },
+    {
+      title: "2D and 3D Animation and Explainer Videos",
+      description: "Clear visual storytelling that makes complex subjects accessible.",
+      image: "/2d-3d-Animation-banner.png",
+      href: "/services/creative-studio/2d-3d-animation",
+    },
+    {
+      title: "Simulation Games",
+      description: "Interactive scenarios that turn decisions into practical learning.",
+      image: "/game-and-simulation.png",
+      href: "/services/learning-solutions/simulation-games",
+    },
+  ],
   solutions: [
     {
       title: "Elevox",

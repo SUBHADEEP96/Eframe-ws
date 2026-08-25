@@ -185,6 +185,9 @@
   .site-header[data-light="true"] .nav-link {
     @apply hover:bg-muted;
   }
+  .nav-link[data-active="true"] {
+    @apply text-primary;
+  }
   .nav-link svg {
     @apply size-3.5;
   }
@@ -266,6 +269,9 @@
   }
   .solution-shade {
     @apply absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/10;
+  }
+  .service-card {
+    @apply flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl motion-reduce:transition-none motion-reduce:hover:translate-y-0;
   }
   .feature-pill {
     @apply flex items-center gap-3 rounded-xl bg-muted px-4 py-4 text-sm font-medium;
