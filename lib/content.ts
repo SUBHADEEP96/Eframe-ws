@@ -159,14 +159,14 @@ export const homepage = {
       description:
         "A connected learning platform for creating and managing organisational capability.",
       image: "/Learning-Management-System-banner.png",
-      href: "/products/elevox",
+      href: "/solutions/elevox",
     },
     {
       title: "Drive 360",
       description:
         "An immersive approach to driver awareness, practice and safer decision-making.",
       image: "/VRSimulator.jpg",
-      href: "/products/drive-360",
+      href: "/solutions/drive-360",
     },
     {
       title: "AI-Enabled Solutions",
