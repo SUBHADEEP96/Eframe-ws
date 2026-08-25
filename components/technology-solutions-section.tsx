@@ -17,6 +17,7 @@ export function TechnologySolutionsSection() {
   return (
     <section
       className="technology-section"
+      id="solutions"
       aria-labelledby="technology-heading"
     >
       <div className="section-shell">

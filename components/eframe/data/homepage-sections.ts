@@ -18,7 +18,7 @@ export const fallbackStories: SuccessStory[] = [
 ];
 
 export const fallbackEvents: EventGlimpse[] = [
-  { id: "event-1", title: "Immersive technology showcase", image: "/NT_VR_CEAT.png", alt: "Eframe immersive technology showcase" },
+  { id: "event-1", title: "Immersive technology showcase", image: "/amazon.jpg", alt: "Eframe immersive technology showcase" },
   { id: "event-2", title: "Enterprise learning demonstration", image: "/sucess-story/VRandAR/Index/AmazonVR1.png", alt: "Enterprise virtual reality demonstration" },
   { id: "event-3", title: "Creative production moment", image: "/sucess-story/film/service/Corporate/Amazon3.jpg", alt: "Eframe creative production moment" },
   { id: "event-4", title: "Safety simulation experience", image: "/sucess-story/VRandAR/Index/Thysenkrup1.PNG", alt: "Safety simulation experience" },
