@@ -40,7 +40,7 @@ export function SuccessStoriesSection({ stories }: { stories: SuccessStory[] }) 
     <div className="section-shell">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center"><Badge variant="outline">Selected work</Badge><h2 id="stories-heading" className="display-title uppercase">Our success stories</h2><p className="section-copy">Explore how ideas, technology and thoughtful design become measurable experiences for enterprise teams.</p></div>
       <Tabs defaultValue={initial} className="mt-10 gap-8">
-        <div className="overflow-x-auto pb-2"><TabsList className="mx-auto min-w-max">{categories.map((category) => <TabsTrigger key={category} value={category} className="min-h-11 px-4">{category}</TabsTrigger>)}</TabsList></div>
+        <div className="overflow-x-auto pb-2"><div className="flex w-max min-w-full justify-center"><TabsList>{categories.map((category) => <TabsTrigger key={category} value={category} className="min-h-11 px-4">{category}</TabsTrigger>)}</TabsList></div></div>
         {categories.map((category) => <TabsContent key={category} value={category}><StoryGrid stories={stories.filter((story) => story.category === category)} /></TabsContent>)}
       </Tabs>
       <div className="mt-10 text-center"><Button variant="outline" nativeButton={false} render={<Link href="/success-stories" />}>View all success stories <ArrowRight data-icon="inline-end" /></Button></div>

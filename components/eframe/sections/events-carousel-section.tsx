@@ -13,16 +13,16 @@ export function EventsCarouselSection({ events }: { events: EventGlimpse[] }) {
   if (!events.length) return null;
   const move = (direction: number) => setActive((current) => (current + direction + events.length) % events.length);
 
-  return <section className="overflow-hidden bg-background py-20 sm:py-28" aria-labelledby="events-heading">
+  return <section className="overflow-hidden bg-muted/50 py-16 sm:py-20" aria-labelledby="events-heading">
     <div className="section-shell">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 text-center"><Badge variant="outline">Life at Eframe</Badge><h2 id="events-heading" className="display-title">Events &amp; moments</h2><p className="section-copy">Glimpses of the people, partnerships and hands-on experiences behind our work.</p></div>
-      <div className="relative mt-12 h-[290px] sm:h-[420px] lg:h-[520px]" role="region" aria-roledescription="carousel" aria-label="Eframe event glimpses" onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={(event) => { if (touchStart.current === null) return; const distance = event.changedTouches[0].clientX - touchStart.current; if (Math.abs(distance) > 45) move(distance > 0 ? -1 : 1); touchStart.current = null; }}>
+      <div className="relative mx-auto mt-10 h-[240px] max-w-5xl sm:h-[340px] lg:h-[400px]" role="region" aria-roledescription="carousel" aria-label="Eframe event glimpses" onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={(event) => { if (touchStart.current === null) return; const distance = event.changedTouches[0].clientX - touchStart.current; if (Math.abs(distance) > 45) move(distance > 0 ? -1 : 1); touchStart.current = null; }}>
         {events.map((event, index) => {
           const raw = (index - active + events.length) % events.length;
           const offset = raw > events.length / 2 ? raw - events.length : raw;
           const visible = Math.abs(offset) <= 2;
-          return <figure key={event.id} aria-hidden={index !== active} className="absolute left-1/2 top-1/2 aspect-[16/10] w-[82%] max-w-[820px] overflow-hidden rounded-2xl bg-muted shadow-2xl transition-[transform,opacity,filter] duration-500 ease-out motion-reduce:transition-none" style={{ opacity: visible ? offset === 0 ? 1 : Math.abs(offset) === 1 ? .55 : .18 : 0, transform: `translate(-50%, -50%) translateX(${offset * 58}%) scale(${offset === 0 ? 1 : Math.abs(offset) === 1 ? .78 : .62}) perspective(1200px) rotateY(${offset * -8}deg)`, zIndex: 10 - Math.abs(offset), pointerEvents: offset === 0 ? "auto" : "none" }}>
-            <Image src={event.image} alt={event.alt} fill sizes="(max-width: 640px) 82vw, 820px" className="object-cover" />
+          return <figure key={event.id} aria-hidden={index !== active} className="absolute left-1/2 top-1/2 aspect-[16/10] w-[78%] max-w-[640px] overflow-hidden rounded-2xl bg-muted shadow-2xl transition-[transform,opacity,filter] duration-500 ease-out motion-reduce:transition-none" style={{ opacity: visible ? offset === 0 ? 1 : Math.abs(offset) === 1 ? .55 : .18 : 0, transform: `translate(-50%, -50%) translateX(${offset * 58}%) scale(${offset === 0 ? 1 : Math.abs(offset) === 1 ? .78 : .62}) perspective(1200px) rotateY(${offset * -8}deg)`, zIndex: 10 - Math.abs(offset), pointerEvents: offset === 0 ? "auto" : "none" }}>
+            <Image src={event.image} alt={event.alt} fill sizes="(max-width: 640px) 78vw, 640px" className="object-cover" />
             {offset === 0 && <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-5 pb-5 pt-16 text-sm font-medium text-white sm:px-7 sm:pb-7 sm:text-lg">{event.title}</figcaption>}
           </figure>;
         })}
