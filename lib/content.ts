@@ -61,6 +61,17 @@ export const serviceGroups = [
 export const homepage = {
   heroSlides: [
     {
+      eyebrow: "Creative technology",
+      headline: "Make ideas impossible to ignore.",
+      text: "Creative, immersive experiences that help ambitious ideas connect with people and move them to action.",
+      desktopMedia: "/banner.png",
+      mobileMedia: "/banner-mobile.png",
+      mediaType: "image",
+      primaryCta: { label: "Explore Services", href: "/services" },
+      secondaryCta: { label: "View Profile", href: "/eframe-profile.pdf" },
+      overlay: 0.40,
+    },
+    {
       eyebrow: "Learning that performs",
       headline: "Turn knowledge into confident action.",
       text: "Enterprise learning experiences that help people understand, practise and perform when it matters.",
@@ -69,7 +80,7 @@ export const homepage = {
       mediaType: "image",
       primaryCta: { label: "Explore Services", href: "/services" },
       secondaryCta: { label: "View Profile", href: "/eframe-profile.pdf" },
-      overlay: 0.64,
+      overlay: 0.40,
     },
     {
       eyebrow: "Immersive experiences",
@@ -86,7 +97,7 @@ export const homepage = {
         label: "View PDF",
         href: "/VR_based_defensive_driving_simulator.pdf",
       },
-      overlay: 0.6,
+      overlay: 0.40,
     },
     {
       eyebrow: "Enterprise transformation",
@@ -100,8 +111,9 @@ export const homepage = {
         href: "/services",
       },
       secondaryCta: { label: "View Profile", href: "/eframe-profile.pdf" },
-      overlay: 0.67,
+      overlay: 0.40,
     },
+    
   ] satisfies HeroSlide[],
   services: [
     {
