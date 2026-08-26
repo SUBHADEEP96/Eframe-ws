@@ -16,7 +16,7 @@ export function InternalPage({
   title: string;
   eyebrow: string;
   description: string;
-  image?: string;
+  image?: string | null;
   breadcrumbs: { label: string; href?: string }[];
   children?: React.ReactNode;
 }) {
@@ -25,14 +25,24 @@ export function InternalPage({
       <SiteHeader />
       <main className="pt-[76px]">
         <section className="relative min-h-[500px] overflow-hidden bg-ink">
-          <Image
-            src={image}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-35"
-          />
+          {image ? (
+            <Image
+              src={image}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover opacity-35"
+            />
+          ) : (
+            <div
+              className="absolute inset-0 bg-[radial-gradient(circle_at_78%_22%,color-mix(in_oklab,var(--primary)_28%,transparent),transparent_34%),linear-gradient(135deg,#11120f_0%,#25261f_58%,#171815_100%)]"
+              aria-hidden="true"
+            >
+              <div className="absolute -right-24 top-10 size-80 rounded-full border border-white/10 sm:size-[28rem]" />
+              <div className="absolute -right-8 top-36 size-56 rounded-full border border-primary/25 sm:size-80" />
+            </div>
+          )}
           <div className="section-shell relative flex min-h-[500px] flex-col justify-end pb-16 pt-24 text-white">
             <nav
               aria-label="Breadcrumb"

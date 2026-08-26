@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { InternalPage } from "@/components/internal-page";
 const pages: Record<
   string,
-  { title: string; eyebrow: string; description: string; image?: string }
+  { title: string; eyebrow: string; description: string; image?: string | null }
 > = {
   solutions: {
     title: "Solutions for the work that matters.",
@@ -47,14 +47,14 @@ const pages: Record<
     eyebrow: "About Eframe",
     description:
       "Eframe brings learning expertise, creative craft and technology capability together in one collaborative team.",
-    image: "/exprience-bengal.jpg",
+    image: null,
   },
   career: {
     title: "Do work that creates meaningful change.",
     eyebrow: "Career at Eframe",
     description:
       "Join a multidisciplinary team bringing creativity, learning and technology together for real enterprise challenges.",
-    image: "/exprience-bengal.jpg",
+    image: null,
   },
   contact: {
     title: "Bring us your next challenge.",
