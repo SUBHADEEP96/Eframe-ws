@@ -10,6 +10,7 @@ const pages: Record<
     eyebrow: "Solutions",
     description:
       "Connected learning, safety, immersive and AI-enabled solutions designed around enterprise priorities.",
+    image: null,
   },
   products: {
     title: "Purpose-built technology.",
@@ -28,13 +29,14 @@ const pages: Record<
     eyebrow: "Success stories",
     description:
       "A visual collection of learning, immersive, creative and enterprise work delivered by Eframe.",
-    image: "/sucess-story/VRandAR/Index/NT_VR_CEAT.png",
+    image: null,
   },
   "case-studies": {
     title: "A closer look at the work.",
     eyebrow: "Case studies",
     description:
       "Detailed challenges, approaches and outcomes will be published here as verified project content becomes available.",
+    image: null,
   },
   insights: {
     title: "Thinking for a changing workplace.",
@@ -61,7 +63,7 @@ const pages: Record<
     eyebrow: "Contact Eframe",
     description:
       "Tell us what you are trying to change. We will help you find a clear and practical way forward.",
-    image: "/contact_img.png",
+    image: null,
   },
   privacy: {
     title: "Privacy policy",
