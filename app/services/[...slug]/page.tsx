@@ -62,7 +62,7 @@ export default async function ServicePage({ params }: Props) {
       title={item.title}
       eyebrow="Eframe service"
       description={item.description}
-      image={item.image}
+      image={null}
       breadcrumbs={[...item.crumbs]}
     />
   );

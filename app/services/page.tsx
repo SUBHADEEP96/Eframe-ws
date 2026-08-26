@@ -14,6 +14,7 @@ export default function ServicesPage() {
       title="Services built for meaningful change."
       eyebrow="Our services"
       description="Strategy, creativity and technology—connected to help people perform and organisations move forward."
+      image={null}
       breadcrumbs={[{ label: "Services" }]}
     >
       <section className="section-shell py-24">
