@@ -140,7 +140,7 @@ function ServiceBody({ title }: { title: string }) {
             Let&apos;s explore what {title.toLowerCase()} could do for your
             organisation.
           </h2>
-          <Link className="cta-button" href="/contact">
+          <Link className="cta-button" href="/#contact">
             Start a conversation <ArrowRight />
           </Link>
         </div>

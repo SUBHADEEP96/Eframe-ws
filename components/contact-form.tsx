@@ -16,7 +16,6 @@ export function ContactForm() {
       email: form.get("email"),
       phone: form.get("phone") || undefined,
       organisation: form.get("organisation") || undefined,
-      enquiry: form.get("enquiry"),
       message: form.get("message"),
       consent: form.get("consent") === "on",
       website: form.get("website"),
@@ -77,19 +76,6 @@ export function ContactForm() {
           <input name="organisation" autoComplete="organization" />
         </label>
       </div>
-      <label>
-        Enquiry <span>*</span>
-        <select name="enquiry" defaultValue="" required>
-          <option value="" disabled>
-            Select a service
-          </option>
-          <option>Learning solutions</option>
-          <option>Immersive experiences</option>
-          <option>Creative studio</option>
-          <option>Enterprise solutions</option>
-          <option>General enquiry</option>
-        </select>
-      </label>
       <label>
         Message <span>*</span>
         <textarea
