@@ -420,9 +420,8 @@
     @apply size-5;
   }
   .site-footer {
-    @apply relative mt-16 bg-[#f0bf4c] text-black;
+    @apply bg-[#f0bf4c] text-black;
   }
-  .footer-wave { @apply absolute inset-x-0 bottom-full h-16 w-full; }
   .site-footer h3 {
     @apply mb-5 text-sm font-semibold;
   }
@@ -439,7 +438,7 @@
   .form-grid { @apply grid gap-5 sm:grid-cols-2; }
   .contact-form label { @apply flex flex-col gap-2 text-sm font-semibold; }
   .contact-form label > span:first-of-type { @apply text-primary; }
-  .contact-form input:not([type="checkbox"]),.contact-form select,.contact-form textarea { @apply w-full rounded-xl border bg-white px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20; }
+  .contact-form input:not([type="checkbox"]),.contact-form textarea { @apply w-full rounded-xl border bg-white px-4 py-3 font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/20; }
   .contact-form small { @apply text-sm text-destructive; }
   .contact-form .consent { @apply flex-row items-start font-normal; }
   .contact-form .consent input { @apply mt-1 size-4; }
