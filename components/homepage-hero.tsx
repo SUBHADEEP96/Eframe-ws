@@ -86,7 +86,7 @@ export function HomepageHero({ slides }: { slides: HeroSlide[] }) {
                   {slide.primaryCta.label}
                   <ArrowRight />
                 </Link>
-                <a
+                {/* <a
                   className="hero-cta hero-cta-secondary"
                   href={slide.secondaryCta.href}
                   target="_blank"
@@ -94,7 +94,7 @@ export function HomepageHero({ slides }: { slides: HeroSlide[] }) {
                 >
                   {slide.secondaryCta.label}
                   <ArrowRight />
-                </a>
+                </a> */}
               </div>
             </div>
           </div>
