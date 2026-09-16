@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -78,6 +79,7 @@ export function SuccessStoriesSection({
 }: {
   stories: SuccessStory[];
 }) {
+  const [activeCategory, setActiveCategory] = useState("all");
   const available = Array.from(new Set(stories.map((story) => story.category)));
   const categories = [
     ...preferredCategories.filter((category) => available.includes(category)),
@@ -101,7 +103,11 @@ export function SuccessStoriesSection({
             measurable experiences for enterprise teams.
           </p>
         </div>
-        <Tabs defaultValue="all" className="mt-10 gap-8">
+        <Tabs
+          value={activeCategory}
+          onValueChange={setActiveCategory}
+          className="mt-10 gap-8"
+        >
           <div className="overflow-x-auto pb-2">
             <div className="flex w-max min-w-full justify-center">
               <TabsList>
