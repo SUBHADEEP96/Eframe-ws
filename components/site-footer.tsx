@@ -8,7 +8,11 @@ import { serviceGroups } from "@/lib/content";
 const socials = [
   ["LinkedIn", "https://www.linkedin.com/company/28124515/", ImLinkedin2],
   ["Facebook", "https://www.facebook.com/eframe.infomedia", SiFacebook],
-  ["YouTube", "https://youtube.com/channel/UC-CUXTkd1dwbyPSCN-yadnw", SiYoutube],
+  [
+    "YouTube",
+    "https://youtube.com/channel/UC-CUXTkd1dwbyPSCN-yadnw",
+    SiYoutube,
+  ],
   ["Instagram", "https://www.instagram.com/eframehub/", SiInstagram],
 ] as const;
 
@@ -18,15 +22,81 @@ export function SiteFooter() {
       <div className="section-shell py-10 sm:py-12">
         <div className="grid gap-9 border-b border-black/15 pb-9 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Image src="/bottom-logo.png" alt="Eframe" width={170} height={58} className="h-auto w-36" />
-            <p className="mt-4 max-w-sm text-sm leading-6 text-black/70">Learning, immersive, creative and enterprise digital solutions shaped around real business needs.</p>
-            <div className="mt-5 flex flex-wrap gap-2">{socials.map(([label, href, Icon]) => <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Follow Eframe on ${label}`} className="social-link"><Icon aria-hidden="true" focusable="false" /></a>)}</div>
+            <Image
+              src="/bottom-logo.png"
+              alt="Eframe"
+              width={170}
+              height={58}
+              className="h-auto w-36"
+            />
+            <p className="mt-4 max-w-sm text-sm leading-6 text-black/70">
+              Learning, immersive, creative and enterprise digital solutions
+              shaped around real business needs.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {socials.map(([label, href, Icon]) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Follow Eframe on ${label}`}
+                  className="social-link"
+                >
+                  <Icon aria-hidden="true" focusable="false" />
+                </a>
+              ))}
+            </div>
           </div>
-          <div><h3>Services</h3><div>{serviceGroups.map((group) => <Link href={`/services/${group.slug}`} key={group.slug}>{group.title}</Link>)}</div></div>
-          <div><h3>Contact</h3><div><span>E405, DC Block, City Centre, Sector - 1, Salt Lake, Kolkata - 700 064</span><a href="mailto:info@eframe.in">info@eframe.in</a><a href="tel:+919674032010">+91 9674032010</a></div></div>
-          <div><h3>Explore</h3><div>{[["Solutions", "/solutions"], ["Clientele", "/#clientele"], ["Success Stories", "/success-stories"], ["About", "/about"], ["Career", "/career"], ["Contact", "/#contact"]].map(([label, href]) => <Link href={href} key={label}>{label}</Link>)}</div></div>
+          <div>
+            <h3>Services</h3>
+            <div>
+              {serviceGroups.map((group) => (
+                <Link href={`/services/${group.slug}`} key={group.slug}>
+                  {group.title}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3>Contact</h3>
+            <div>
+              <span>
+                9th Floor, HCJP+499 Webel Tower 1, Adventz Infinity, Module No.
+                904, BN Block, Sector V, Bidhannagar, Kolkata, West Bengal
+                700091
+              </span>
+              <a href="mailto:info@eframe.in">info@eframe.in</a>
+              <a href="tel:+919674032010">+91 9674032010</a>
+            </div>
+          </div>
+          <div>
+            <h3>Explore</h3>
+            <div>
+              {[
+                ["Solutions", "/solutions"],
+                ["Clientele", "/#clientele"],
+                ["Success Stories", "/success-stories"],
+                ["About", "/about"],
+                ["Career", "/career"],
+              ].map(([label, href]) => (
+                <Link href={href} key={label}>
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 pt-6 text-xs text-black/70 sm:flex-row sm:items-center sm:justify-between"><p>© {new Date().getFullYear()} Eframe Infomedia Pvt. Ltd. All rights reserved.</p><div className="flex flex-wrap gap-5"><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/#contact" className="inline-flex items-center gap-1">Contact <ArrowUpRight /></Link></div></div>
+        <div className="flex flex-col gap-4 pt-6 text-xs text-black/70 sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} Eframe Infomedia Pvt. Ltd. All rights
+            reserved.
+          </p>
+          <div className="flex flex-wrap gap-5">
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
