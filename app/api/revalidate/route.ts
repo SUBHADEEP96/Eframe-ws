@@ -6,6 +6,7 @@ const TYPE_TAGS: Record<string, string> = {
   successStory: "successStories",
   event: "events",
   eventGlimpse: "events",
+  testimonial: "testimonials",
   homepage: "home",
   siteSettings: "siteSettings",
 };
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
   revalidateTag("home", { expire: 0 });
   const tag = body._type && TYPE_TAGS[body._type];
   if (tag) revalidateTag(tag, { expire: 0 });
-  else ["clientele", "successStories", "events", "siteSettings"].forEach((item) => revalidateTag(item, { expire: 0 }));
+  else ["clientele", "successStories", "events", "testimonials", "siteSettings"].forEach((item) => revalidateTag(item, { expire: 0 }));
   revalidatePath("/");
   return Response.json({ revalidated: true, tag: tag || "all-homepage-content" });
 }

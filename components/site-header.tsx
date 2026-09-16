@@ -8,10 +8,11 @@ import { ArrowRight, Menu, X } from "lucide-react";
 
 const navigationLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Career", href: "/career" },
+  { label: "Solutions", href: "/solutions" },
   { label: "Services", href: "/services" },
   { label: "Clientele", href: "/#clientele" },
+  { label: "About", href: "/about" },
+  { label: "Career", href: "/career" },
 ];
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
@@ -74,7 +75,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <Link className="header-contact hidden sm:flex" href="/contact">
+          <Link className="header-contact hidden sm:flex" href="/#contact">
             Contact us <ArrowRight />
           </Link>
           <button
@@ -103,7 +104,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             ))}
             <Link
               className="header-contact mt-4 flex justify-center"
-              href="/contact"
+              href="/#contact"
               onClick={() => setMobileOpen(false)}
             >
               Contact us <ArrowRight />

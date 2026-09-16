@@ -17,7 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/case-studies",
     "/insights",
     "/about",
-    "/contact",
     ...services,
     ...solutions.map((item)=>`/solutions/${item.slug}`),
     ...industries.map((item)=>`/industries/${item.slug}`),

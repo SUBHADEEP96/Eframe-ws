@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { HomepageHero } from "@/components/homepage-hero";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -11,6 +9,9 @@ import { ClienteleSection } from "@/components/eframe/sections/clientele-section
 import { SuccessStoriesSection } from "@/components/eframe/sections/success-stories-section";
 import { EventsCarouselSection } from "@/components/eframe/sections/events-carousel-section";
 import { TechnologySolutionsSection } from "@/components/technology-solutions-section";
+import { TestimonialsSection } from "@/components/eframe/sections/testimonials-section";
+import { ServiceGroupGrid } from "@/components/service-group-grid";
+import { ContactForm } from "@/components/contact-form";
 import {
   fallbackClients,
   fallbackEvents,
@@ -18,6 +19,7 @@ import {
   type ClientLogo,
   type EventGlimpse,
   type SuccessStory,
+  type Testimonial,
 } from "@/components/eframe/data/homepage-sections";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { stories as catalogStories } from "@/lib/catalog";
@@ -25,6 +27,7 @@ import {
   CLIENT_LOGOS_QUERY,
   EVENTS_QUERY,
   SUCCESS_STORIES_QUERY,
+  TESTIMONIALS_QUERY,
 } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
@@ -48,6 +51,19 @@ type CmsStory = {
   bodyText?: string;
   image?: { url?: string; alt?: string };
 };
+type CmsTestimonial = {
+  _id: string;
+  title?: string;
+  personName?: string;
+  personRole?: string;
+  company?: string;
+  quote?: string;
+  mediaType?: "image" | "video";
+  image?: { url?: string; alt?: string };
+  videoUrl?: string;
+  videoPosterUrl?: string;
+  accessibleLabel?: string;
+};
 type CmsEvent = {
   _id: string;
   title?: string;
@@ -57,13 +73,17 @@ type CmsEvent = {
 };
 
 export default async function Home() {
-  const [cmsClients, cmsStories, cmsEvents] = await Promise.all([
-    sanityFetch<CmsClient[]>(CLIENT_LOGOS_QUERY, { tags: ["clientele"] }),
-    sanityFetch<CmsStory[]>(SUCCESS_STORIES_QUERY, {
-      tags: ["successStories"],
-    }),
-    sanityFetch<CmsEvent[]>(EVENTS_QUERY, { tags: ["events"] }),
-  ]);
+  const [cmsClients, cmsStories, cmsEvents, cmsTestimonials] =
+    await Promise.all([
+      sanityFetch<CmsClient[]>(CLIENT_LOGOS_QUERY, { tags: ["clientele"] }),
+      sanityFetch<CmsStory[]>(SUCCESS_STORIES_QUERY, {
+        tags: ["successStories"],
+      }),
+      sanityFetch<CmsEvent[]>(EVENTS_QUERY, { tags: ["events"] }),
+      sanityFetch<CmsTestimonial[]>(TESTIMONIALS_QUERY, {
+        tags: ["testimonials"],
+      }),
+    ]);
   const clients: ClientLogo[] =
     cmsClients
       ?.filter((item) => item.logo && item.name)
@@ -102,6 +122,37 @@ export default async function Home() {
         image: item.image!.url!,
         alt: item.alt || item.image?.alt || item.title!,
         date: item.eventDate,
+      })) || [];
+  const testimonials: Testimonial[] =
+    cmsTestimonials
+      ?.filter(
+        (item) =>
+          item.title &&
+          item.personName &&
+          item.quote &&
+          ((item.mediaType === "video" && item.videoUrl) ||
+            (item.mediaType !== "video" && item.image?.url)),
+      )
+      .map((item) => ({
+        id: item._id,
+        title: item.title!,
+        personName: item.personName!,
+        personRole: item.personRole,
+        company: item.company,
+        quote: item.quote!,
+        mediaType: item.mediaType === "video" ? "video" : "image",
+        image: item.image?.url
+          ? {
+              url: item.image.url,
+              alt:
+                item.image.alt ||
+                item.accessibleLabel ||
+                `Portrait of ${item.personName}`,
+            }
+          : undefined,
+        videoUrl: item.videoUrl,
+        videoPosterUrl: item.videoPosterUrl,
+        accessibleLabel: item.accessibleLabel,
       })) || [];
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -165,6 +216,12 @@ export default async function Home() {
 
         <TechnologySolutionsSection />
 
+        <div id="clientele">
+          <ClienteleSection
+            clients={clients.length ? clients : fallbackClients}
+          />
+        </div>
+
         <section
           className="section-shell py-20 sm:py-28"
           id="services"
@@ -176,82 +233,45 @@ export default async function Home() {
               Services built around the outcome.
             </h2>
             <p className="section-copy">
-              Eight connected capabilities, delivered with the right balance of
+              Four connected service groups, delivered with the right balance of
               creative thinking and technology.
             </p>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {homepage.services.map((service) => (
-              <Link
-                className="service-card group"
-                href={service.href}
-                key={service.title}
-              >
-                <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-                  <Image
-                    src={service.image}
-                    alt=""
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="text-lg font-semibold leading-snug">
-                    {service.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    {service.description}
-                  </p>
-                  <span className="mt-auto flex items-center gap-2 pt-5 text-sm font-semibold text-primary">
-                    Explore service{" "}
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="mt-12">
+            <ServiceGroupGrid />
           </div>
         </section>
 
+        <TestimonialsSection testimonials={testimonials} />
         <EventsCarouselSection
           events={events.length ? events : fallbackEvents}
         />
-        <div id="clientele">
-          <ClienteleSection
-            clients={clients.length ? clients : fallbackClients}
-          />
-        </div>
         <SuccessStoriesSection
           stories={stories.length ? stories : fallbackStories}
         />
 
         <section
-          className="relative overflow-hidden bg-primary py-16 sm:py-20"
+          className="bg-primary py-14 sm:py-16"
           aria-labelledby="milestone-heading"
         >
-          <div
-            className="pointer-events-none absolute inset-0 opacity-30"
-            aria-hidden="true"
-          >
-            <div className="absolute -bottom-32 left-1/2 h-64 w-[72rem] -translate-x-1/2 rounded-[50%] border border-black/30" />
-            <div className="absolute -bottom-40 left-1/2 h-64 w-[58rem] -translate-x-1/2 rounded-[50%] border border-black/20" />
-          </div>
-          <div className="section-shell relative">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[.2em] text-black/60">
-                Our journey
-              </p>
-              <h2
-                id="milestone-heading"
-                className="mt-4 text-4xl font-semibold tracking-[-.04em] text-black sm:text-6xl"
-              >
-                Milestones
-              </h2>
-              <p className="mt-4 text-black/65">
+          <div className="section-shell">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[.2em] text-black/60">
+                  Our journey
+                </p>
+                <h2
+                  id="milestone-heading"
+                  className="mt-3 text-4xl font-semibold tracking-[-.04em] text-black sm:text-5xl"
+                >
+                  Milestones
+                </h2>
+              </div>
+              <p className="max-w-md text-black/65">
                 Innovation and excellence, built through the years.
               </p>
             </div>
-            <ul className="mt-10 grid overflow-hidden rounded-2xl border border-black/20 bg-black/10 sm:grid-cols-2 lg:grid-cols-5">
+            <ul className="mt-8 grid grid-cols-2 overflow-hidden rounded-2xl border border-black/20 bg-primary lg:grid-cols-5">
               {[
                 ["20+", "Years of experience"],
                 ["156+", "AV content created"],
@@ -260,13 +280,13 @@ export default async function Home() {
                 ["10,000+", "Users across industries"],
               ].map(([value, label]) => (
                 <li
-                  className="flex min-h-40 flex-col items-center justify-center border-black/15 p-6 text-center sm:border-r sm:last:border-r-0"
+                  className="min-w-0 border-b border-r border-black/15 p-5 last:col-span-2 sm:p-6 lg:last:col-span-1"
                   key={label}
                 >
-                  <strong className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+                  <strong className="block text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                     {value}
                   </strong>
-                  <span className="mt-3 text-sm font-medium text-black/65">
+                  <span className="mt-2 block text-sm font-medium leading-5 text-black/65">
                     {label}
                   </span>
                 </li>
@@ -290,19 +310,41 @@ export default async function Home() {
             <FAQ items={homepage.faqs} />
           </div>
         </section>
-        <section className="section-shell pb-24">
-          <div className="cta-panel">
+        <section
+          id="contact"
+          className="bg-soft py-20 sm:py-24"
+          aria-labelledby="contact-heading"
+        >
+          <div className="section-shell grid gap-12 lg:grid-cols-[.75fr_1.25fr] lg:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[.2em] text-primary">
+              <p className="section-kicker">
                 Let&apos;s build what&apos;s next
               </p>
-              <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              <h2 id="contact-heading" className="display-title">
                 Bring us the challenge. We&apos;ll help shape the way forward.
               </h2>
+              <p className="section-copy mt-6">
+                Tell us what you are trying to change. We will help you find a
+                clear, practical way forward.
+              </p>
+              <address className="mt-8 flex flex-col gap-5 not-italic text-sm">
+                <p className="flex gap-3">
+                  <MapPin className="mt-0.5 size-5 shrink-0 text-primary" />
+                  9th Floor, HCJP+499 Webel Tower 1, Adventz Infinity, Module
+                  No. 904, BN Block, Sector V, Bidhannagar, Kolkata, West Bengal
+                  700091
+                </p>
+                <a className="flex gap-3" href="mailto:info@eframe.in">
+                  <Mail className="size-5 text-primary" />
+                  info@eframe.in
+                </a>
+                <a className="flex gap-3" href="tel:+919674032010">
+                  <Phone className="size-5 text-primary" />
+                  +91 9674032010
+                </a>
+              </address>
             </div>
-            <Link href="/contact" className="cta-button">
-              Start a conversation <ArrowRight />
-            </Link>
+            <ContactForm />
           </div>
         </section>
       </main>

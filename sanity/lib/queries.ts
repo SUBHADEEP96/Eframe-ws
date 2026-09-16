@@ -212,10 +212,20 @@ export const TESTIMONIALS_QUERY = defineQuery(`
     active != false
   ]
   | order(coalesce(order, 9999) asc, title asc){
-      ${card},
+      _id,
+      title,
       quote,
       personName,
-      personRole
+      personRole,
+      company,
+      "mediaType": coalesce(mediaType, "image"),
+      image${image},
+      "videoUrl": videoFile.asset->url,
+      "videoPosterUrl": videoPoster.asset->url,
+      accessibleLabel,
+      "order": coalesce(order, 9999),
+      active,
+      featured
     }
 `);
 

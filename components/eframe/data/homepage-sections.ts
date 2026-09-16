@@ -15,6 +15,19 @@ export type SuccessStory = {
   alt: string;
   href?: string;
 };
+export type Testimonial = {
+  id: string;
+  title: string;
+  personName: string;
+  personRole?: string;
+  company?: string;
+  quote: string;
+  mediaType: "image" | "video";
+  image?: { url: string; alt: string };
+  videoUrl?: string;
+  videoPosterUrl?: string;
+  accessibleLabel?: string;
+};
 export type EventGlimpse = {
   id: string;
   title: string;

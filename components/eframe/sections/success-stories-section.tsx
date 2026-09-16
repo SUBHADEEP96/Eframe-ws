@@ -15,17 +15,32 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  normalizeSuccessStoryCategory,
+  successStoryCategories,
+  type SuccessStoryCategory,
+} from "@/lib/success-story-categories";
 import type { SuccessStory } from "../data/homepage-sections";
 
-const preferredCategories = [
-  "Film Production",
-  "Virtual Reality",
-  "Process Digitization",
-  "Simulation Games",
-  "Creative Design",
-];
-
-function StoryGrid({ stories }: { stories: SuccessStory[] }) {
+function StoryGrid({
+  stories,
+  category,
+}: {
+  stories: SuccessStory[];
+  category: SuccessStoryCategory;
+}) {
+  if (!stories.length) {
+    return (
+      <Card className="border-dashed bg-background/60 py-10 text-center shadow-none">
+        <CardContent>
+          <p className="font-medium">No published stories in {category} yet.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Please check back as we add more client work.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
       {stories.map((story) => (
@@ -44,7 +59,7 @@ function StoryGrid({ stories }: { stories: SuccessStory[] }) {
           </div>
           <CardHeader className="gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge>{story.category}</Badge>
+              <Badge>{category}</Badge>
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {story.client}
               </span>
@@ -79,14 +94,18 @@ export function SuccessStoriesSection({
 }: {
   stories: SuccessStory[];
 }) {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const available = Array.from(new Set(stories.map((story) => story.category)));
-  const categories = [
-    ...preferredCategories.filter((category) => available.includes(category)),
-    ...available.filter((category) => !preferredCategories.includes(category)),
-  ];
-  if (!categories.length) return null;
-
+  const [activeCategory, setActiveCategory] = useState<SuccessStoryCategory>(
+    successStoryCategories[0],
+  );
+  const normalized = stories
+    .map((story) => ({
+      story,
+      category: normalizeSuccessStoryCategory(story.category),
+    }))
+    .filter(
+      (item): item is { story: SuccessStory; category: SuccessStoryCategory } =>
+        item.category !== null,
+    );
   return (
     <section
       className="bg-[linear-gradient(135deg,color-mix(in_oklab,var(--primary)_10%,var(--background)),var(--background)_55%,color-mix(in_oklab,var(--primary)_5%,var(--background)))] py-20 sm:py-28"
@@ -105,16 +124,15 @@ export function SuccessStoriesSection({
         </div>
         <Tabs
           value={activeCategory}
-          onValueChange={setActiveCategory}
+          onValueChange={(value) =>
+            setActiveCategory(value as SuccessStoryCategory)
+          }
           className="mt-10 gap-8"
         >
           <div className="overflow-x-auto pb-2">
-            <div className="flex w-max min-w-full justify-center">
+            <div className="flex w-max min-w-full justify-start sm:justify-center">
               <TabsList>
-                <TabsTrigger value="all" className="min-h-11 px-4">
-                  All
-                </TabsTrigger>
-                {categories.map((category) => (
+                {successStoryCategories.map((category) => (
                   <TabsTrigger
                     key={category}
                     value={category}
@@ -126,13 +144,13 @@ export function SuccessStoriesSection({
               </TabsList>
             </div>
           </div>
-          <TabsContent value="all">
-            <StoryGrid stories={stories} />
-          </TabsContent>
-          {categories.map((category) => (
+          {successStoryCategories.map((category) => (
             <TabsContent key={category} value={category}>
               <StoryGrid
-                stories={stories.filter((story) => story.category === category)}
+                category={category}
+                stories={normalized
+                  .filter((item) => item.category === category)
+                  .map((item) => item.story)}
               />
             </TabsContent>
           ))}

@@ -135,6 +135,28 @@ const homepage = defineType({
     }),
   ],
 });
+const testimonial = defineType({
+  name: "testimonial",
+  title: "Testimonials",
+  type: "document",
+  fields: [
+    defineField({ name: "title", title: "Internal title", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "personName", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "personRole", type: "string" }),
+    defineField({ name: "company", type: "string" }),
+    defineField({ name: "quote", type: "text", rows: 5, validation: (r) => r.required() }),
+    defineField({ name: "mediaType", type: "string", initialValue: "image", options: { list: [{ title: "Image", value: "image" }, { title: "Video", value: "video" }], layout: "radio" }, validation: (r) => r.required() }),
+    defineField({ name: "image", type: "image", options: { hotspot: true }, hidden: ({ parent }) => parent?.mediaType !== "image", fields: [{ name: "alt", type: "string", validation: (r) => r.required() }], validation: (r) => r.custom((value, context) => context.parent && (context.parent as { mediaType?: string }).mediaType === "image" && !value ? "An image is required for image testimonials" : true) }),
+    defineField({ name: "videoFile", type: "file", options: { accept: "video/*" }, hidden: ({ parent }) => parent?.mediaType !== "video", validation: (r) => r.custom((value, context) => context.parent && (context.parent as { mediaType?: string }).mediaType === "video" && !value ? "A video is required for video testimonials" : true) }),
+    defineField({ name: "videoPoster", type: "image", options: { hotspot: true }, hidden: ({ parent }) => parent?.mediaType !== "video" }),
+    defineField({ name: "accessibleLabel", type: "string" }),
+    defineField({ name: "websiteUrl", type: "url" }),
+    defineField({ name: "active", type: "boolean", initialValue: true }),
+    defineField({ name: "featured", type: "boolean", initialValue: false }),
+    defineField({ name: "order", type: "number" }),
+  ],
+  preview: { select: { title: "personName", subtitle: "company", media: "image" } },
+});
 const contentDoc = (name: string, title: string) =>
   defineType({
     name,
@@ -161,11 +183,11 @@ const contentDoc = (name: string, title: string) =>
               type: "string",
               options: {
                 list: [
-                  "Film Production",
-                  "Virtual Reality",
+                  "AI & IoT Solution",
                   "Process Digitization",
-                  "Simulation Games",
-                  "Creative Design",
+                  "Learning Solutions",
+                  "Creative Studio",
+                  "Immersive Experiences",
                 ],
               },
               validation: (r) => r.required(),
@@ -246,13 +268,13 @@ export const schemaTypes = [
   heroSlide,
   homepage,
   navigation,
+  testimonial,
   ...[
     ["solution", "Solutions"],
     ["product", "Products"],
     ["service", "Services"],
     ["industry", "Industries"],
     ["clientLogo", "Client logos"],
-    ["testimonial", "Testimonials"],
     ["successStory", "Success stories"],
     ["caseStudy", "Case studies"],
     ["event", "Pictures & events"],
